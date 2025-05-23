@@ -1,10 +1,12 @@
-export { default as Tree } from './components/Tree.jsx';
-export { default as TreeContainer } from './components/TreeContainer.jsx';
+import { TreeContainer, FilteringContainer, renderers, UnstableFastTree } from './components/index.js';
+import * as selectors from './selectors/nodes.js';
+import * as constants from './constants.js';
 
-// Renderers
-export { default as Deletable } from './components/renderers/Deletable.jsx';
-export { default as Expandable } from './components/renderers/Expandable.jsx';
-export { default as Favorite } from './components/renderers/Favorite.jsx';
+export default TreeContainer;
 
-// Tree state
-export * from './state/TreeState';
+export {
+    selectors,
+    renderers,
+    constants,
+    FilteringContainer,
+};

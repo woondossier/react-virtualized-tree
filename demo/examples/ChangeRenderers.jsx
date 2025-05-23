@@ -39,21 +39,22 @@ class ChangeRenderers extends Component {
   }
 }
 
-export default createEntry(
-  'customize-renderers',
-  'ChangeRenderers',
-  'Customize default renderers',
-  <div>
-    <p>
-      A good example of a possible customization of a default renderer is customizing the tree to display as a folder
-      structure.
-    </p>
+const ChangeRendersEntry = createEntry(
+    'customize-renderers',
+    'ChangeRenderers',
+    'Customize default renderers',
+    <div>
+        <p>
+            A good example of a possible customization of a default renderer is customizing the tree to display as a folder
+            structure.
+        </p>
 
-    <p>
-      By exposing <code>iconsClassNameMap</code>, it is possible to pass in the styles applied to the Expandable
-      renderer. The available options are:
-    </p>
-    <code>{`{ expanded: string; collapsed: string; lastChild: string; }`}</code>
-  </div>,
-  ChangeRenderers
+        <p>
+            By exposing <code>iconsClassNameMap</code>, it is possible to pass in the styles applied to the Expandable
+            renderer. The available options are:
+        </p>
+        <code>{`{ expanded: string; collapsed: string; lastChild: string; }`}</code>
+    </div>,
+    ChangeRenderers
 );
+export default ChangeRendersEntry;

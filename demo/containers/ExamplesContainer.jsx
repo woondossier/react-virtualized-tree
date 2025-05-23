@@ -52,7 +52,7 @@ const ExamplesContainer = () => {
 
       <Grid.Column width={12}>
         <Routes>
-          <Route path="/examples/:example" element={<ExampleWrapper />} />
+          <Route path=":example" element={<ExampleWrapper />} />
         </Routes>
       </Grid.Column>
     </Grid>

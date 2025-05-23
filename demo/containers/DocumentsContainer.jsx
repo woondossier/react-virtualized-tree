@@ -3,8 +3,7 @@ import { Grid, Menu } from 'semantic-ui-react';
 import { Link, useLocation, useParams, Routes, Route } from 'react-router-dom';
 
 import documents from '../docs';
-import Doc from '../docs/Doc';
-import { getDocumentsPath } from '../toolbelt';
+import Doc from '../docs/Docs.jsx';
 import './ExamplesContainer.css';
 
 const ExamplesContainer = () => {

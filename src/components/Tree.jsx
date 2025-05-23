@@ -13,8 +13,7 @@ export default class Tree extends React.Component {
 
     getRowCount = () => {
         const {nodes} = this.props;
-
-        return nodes instanceof State ? nodes.flattenedTree.length : nodes.length;
+        return nodes instanceof State ? nodes.flattenedTree?.length : nodes?.length;
     };
 
     getNodeDeepness = (node, index) => {
@@ -35,8 +34,8 @@ export default class Tree extends React.Component {
             : nodes[index];
     };
 
-    rowRenderer = ({node, key, measure, style, NodeRenderer, index}) => {
-        const {nodeMarginLeft} = this.props;
+    rowRenderer = ({node, key, measure, style, index}) => {
+        const {nodeMarginLeft, NodeRenderer} = this.props;
 
         return (
             <NodeRenderer
