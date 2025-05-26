@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "repository": "https://github.com/woondossier/react-virtualized-tree",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -43,9 +44,11 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^19.1.0",
     "react-element-to-jsx-string": "^17.0.1",
+    "react-lifecycles-compat": "^3.0.4",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.6.0",
     "react-virtualized": "^9.22.6",
+    "rollup-plugin-visualizer": "^5.14.0",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^3.0.0-beta.2",
     "vite": "^6.3.5"

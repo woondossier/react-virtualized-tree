@@ -1,105 +1,114 @@
-import { getFlattenedTreePaths } from '../selectors/getFlattenedTree';
-import { getNodeFromPath } from '../selectors/nodes';
+import {getFlattenedTreePaths} from '../selectors/getFlattenedTree';
+import {getNodeFromPath} from '../selectors/nodes';
 
-/**
- * Immutable structure that represents the internal tree state:
- * - original tree (`tree`)
- * - visible node paths (`flattenedTree`)
- */
 export class State {
-    flattenedTree = null;
-    tree = null;
+  flattenedTree = null;
+  tree = null;
 
-    constructor(tree, flattenedTree) {
-        this.tree = tree;
-        this.flattenedTree = flattenedTree || getFlattenedTreePaths(tree);
-    }
+  constructor(tree, flattenedTree) {
+    this.tree = tree;
+    this.flattenedTree = flattenedTree || getFlattenedTreePaths(tree);
+  }
 }
 
-/**
- * Ensures the passed value is a valid State instance.
- */
-export const validateState = (state) => {
-    if (!(state instanceof State)) {
-        throw new Error(`Expected a State instance, but got: ${typeof state}`);
-    }
+export const validateState = state => {
+  if (!(state instanceof State)) {
+    throw new Error(`Expected a State instance but got ${typeof state}`);
+  }
 };
 
 /**
- * Static methods to interact with and query a State object.
+ * Immutable structure that represents the TreeState.
  */
 export default class TreeState {
-    /**
-     * Retrieves the node at a given visible index in the flattened tree.
-     */
-    static getNodeAt = (state, index) => {
-        validateState(state);
+  /**
+   * Given a state, finds a node at a certain row index.
+   * @param {State} state - The current state
+   * @param {number} index - The visible row index
+   * @return {State} An internal state representation
+   */
+  static getNodeAt = (state, index) => {
+    validateState(state);
 
-        const rowPath = state.flattenedTree[index];
+    const rowPath = state.flattenedTree[index];
 
-        if (!rowPath) {
-            throw new Error(
-                `No node at row "${index}". The tree has ${state.flattenedTree.length} visible rows.`
-            );
-        }
+    if (!rowPath) {
+      throw Error(
+        `Tried to get node at row "${index}" but got nothing, the tree are ${state.flattenedTree.length} visible rows`,
+      );
+    }
 
-        return getNodeFromPath(rowPath, state.tree);
-    };
+    return getNodeFromPath(rowPath, state.tree);
+  };
 
-    /**
-     * Retrieves the deepness (indent level) of a node at a given row.
-     */
-    static getNodeDeepness = (state, index) => {
-        validateState(state);
+  /**
+   * Given a state, finds a node deepness at a certain row index.
+   * @param {State} state - The current state
+   * @param {number} index - The visible row index
+   * @return {number} The node deepness
+   */
+  static getNodeDeepness = (state, index) => {
+    validateState(state);
 
-        const rowPath = state.flattenedTree[index];
+    const rowPath = state.flattenedTree[index];
 
-        if (!rowPath) {
-            throw new Error(
-                `No node at row "${index}". The tree has ${state.flattenedTree.length} visible rows.`
-            );
-        }
+    if (!rowPath) {
+      throw Error(
+        `Tried to get node at row "${index}" but got nothing, the tree are ${state.flattenedTree.length} visible rows`,
+      );
+    }
 
-        return rowPath.length - 1;
-    };
+    return rowPath.length - 1;
+  };
 
-    /**
-     * Calculates how many visible descendant rows appear after a node.
-     */
-    static getNumberOfVisibleDescendants = (state, index) => {
-        const { id } = TreeState.getNodeAt(state, index);
-        const { flattenedTree } = state;
+  /**
+   * Given a state and an index, finds the number of visible descendants
+   * @param {State} state - The current state
+   * @param {number} index - The visible row index
+   * @return {number} The number of visible descendants
+   */
+  static getNumberOfVisibleDescendants = (state, index) => {
+    const {id} = TreeState.getNodeAt(state, index);
 
-        let i = index + 1;
-        while (i < flattenedTree.length) {
-            const path = flattenedTree[i];
-            if (!path.includes(id)) break;
-            i++;
-        }
+    const {flattenedTree} = state;
+    let i;
 
-        return Math.max(i - 1 - index, 0);
-    };
+    for (i = index; i < flattenedTree.length; i++) {
+      const path = flattenedTree[i];
 
-    /**
-     * Retrieves the original tree structure.
-     */
-    static getTree = (state) => {
-        validateState(state);
-        return state.tree;
-    };
+      if (!path.some(p => p === id)) {
+        break;
+      }
+    }
 
-    /**
-     * Creates a new tree state from an array-based tree.
-     */
-    static createFromTree = (tree) => {
-        if (!tree) {
-            throw new Error('A falsy tree was supplied.');
-        }
+    return Math.max(i - 1 - index, 0);
+  };
 
-        if (!Array.isArray(tree)) {
-            throw new Error('Expected tree to be an array.');
-        }
+  /**
+   * Given a state, gets the tree
+   * @param {State} state - The current state
+   * @return {Node[]} The tree
+   */
+  static getTree = state => {
+    validateState(state);
 
-        return new State(tree);
-    };
+    return state.tree;
+  };
+
+  /**
+   * Creates an instance of state.
+   * @param {Node[]} tree - The original tree
+   * @return {State} An internal state representation
+   */
+  static createFromTree = tree => {
+    if (!tree) {
+      throw Error('A falsy tree was supplied in tree creation');
+    }
+
+    if (!Array.isArray(tree)) {
+      throw Error('An invalid tree was supplied in creation');
+    }
+
+    return new State(tree);
+  };
 }

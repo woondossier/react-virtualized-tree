@@ -1,74 +1,74 @@
 import {
-    getFlattenedTreePaths,
-    doesChangeAffectFlattenedTree,
-    isNodeExpanded,
-    nodeHasChildren,
+  getFlattenedTreePaths,
+  doesChangeAffectFlattenedTree,
+  isNodeExpanded,
+  nodeHasChildren,
 } from '../selectors/getFlattenedTree';
-
-import TreeState, { State } from './TreeState';
-import {
-    replaceNodeFromTree,
-    deleteNodeFromTree,
-} from '../selectors/nodes';
+import TreeState, {State} from './TreeState';
+import {replaceNodeFromTree, deleteNodeFromTree} from '../selectors/nodes';
 
 /**
- * Tree state mutation helpers based on visible row index.
+ * @callback setNode
+ * @param {Node} node - current node value
+ * @return {Node} The updated node
+ */
+
+/**
+ * Set of Tree State Modifiers
  */
 export default class TreeStateModifiers {
-    /**
-     * Updates a node at the given visible row index using a patch or updater function.
-     *
-     * @param {State} state
-     * @param {number} index
-     * @param {Function|Object} nodeUpdate - Either a new node object or a function to mutate it
-     * @returns {State}
-     */
-    static editNodeAt = (state, index, nodeUpdate) => {
-        const originalNode = TreeState.getNodeAt(state, index);
-        const updatedNode =
-            typeof nodeUpdate === 'function' ? nodeUpdate(originalNode) : nodeUpdate;
+  /**
+   * Given a state, finds a node at a certain row index.
+   * @param {State} state - The current state
+   * @param {number} index - The visible row index
+   * @param {setNode|Node} nodeUpdate - A function to update the node
+   * @return {State} An internal state representation
+   */
+  static editNodeAt = (state, index, nodeUpdate) => {
+    const node = TreeState.getNodeAt(state, index);
+    const updatedNode = typeof nodeUpdate === 'function' ? nodeUpdate(node) : nodeUpdate;
+    const flattenedTree = [...state.flattenedTree];
+    const flattenedNodeMap = flattenedTree[index];
+    const parents = flattenedNodeMap.slice(0, flattenedNodeMap.length - 1);
 
-        const flattenedTree = [...state.flattenedTree];
-        const path = flattenedTree[index];
-        const parents = path.slice(0, path.length - 1);
+    if (doesChangeAffectFlattenedTree(node, updatedNode)) {
+      const numberOfVisibleDescendants = TreeState.getNumberOfVisibleDescendants(state, index);
 
-        if (doesChangeAffectFlattenedTree(originalNode, updatedNode)) {
-            const visibleDescendants = TreeState.getNumberOfVisibleDescendants(state, index);
+      if (isNodeExpanded(updatedNode)) {
+        const updatedNodeSubTree = getFlattenedTreePaths([updatedNode], parents);
 
-            if (isNodeExpanded(updatedNode)) {
-                const subtree = getFlattenedTreePaths([updatedNode], parents);
-                flattenedTree.splice(index + 1, 0, ...subtree.slice(1));
-            } else {
-                flattenedTree.splice(index + 1, visibleDescendants);
-            }
-        }
+        flattenedTree.splice(index + 1, 0, ...updatedNodeSubTree.slice(1));
+      } else {
+        flattenedTree.splice(index + 1, numberOfVisibleDescendants);
+      }
+    }
 
-        const tree = replaceNodeFromTree(state.tree, { ...updatedNode, parents });
+    const tree = replaceNodeFromTree(state.tree, {...updatedNode, parents});
 
-        return new State(tree, flattenedTree);
-    };
+    return new State(tree, flattenedTree);
+  };
 
-    /**
-     * Removes a node and all its visible descendants from the state.
-     *
-     * @param {State} state
-     * @param {number} index
-     * @returns {State}
-     */
-    static deleteNodeAt = (state, index) => {
-        const node = TreeState.getNodeAt(state, index);
-        const flattenedTree = [...state.flattenedTree];
-        const path = flattenedTree[index];
-        const parents = path.slice(0, path.length - 1);
+  /**
+   * Given a state, deletes a node
+   * @param {State} state - The current state
+   * @param {number} index - The visible row index
+   * @return {State} An internal state representation
+   */
+  static deleteNodeAt = (state, index) => {
+    const node = TreeState.getNodeAt(state, index);
 
-        const visibleDescendants = nodeHasChildren(node)
-            ? TreeState.getNumberOfVisibleDescendants(state, index)
-            : 0;
+    const flattenedTree = [...state.flattenedTree];
+    const flattenedNodeMap = flattenedTree[index];
+    const parents = flattenedNodeMap.slice(0, flattenedNodeMap.length - 1);
 
-        flattenedTree.splice(index, 1 + visibleDescendants);
+    const numberOfVisibleDescendants = nodeHasChildren(node)
+      ? TreeState.getNumberOfVisibleDescendants(state, index)
+      : 0;
 
-        const tree = deleteNodeFromTree(state.tree, { ...node, parents });
+    flattenedTree.splice(index, 1 + numberOfVisibleDescendants);
 
-        return new State(tree, flattenedTree);
-    };
+    const tree = deleteNodeFromTree(state.tree, {...node, parents});
+
+    return new State(tree, flattenedTree);
+  };
 }

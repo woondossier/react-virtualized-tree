@@ -1,7 +1,5 @@
-import React from 'react';
+import { createContext } from 'react';
 
-export const TreeContext = React.createContext({
-    depth: 0,
-    parentNode: null,
-    treeState: null,
+export const TreeContext = createContext({
+    unfilteredNodes: null, // default value
 });
