@@ -43,7 +43,7 @@ export interface TreeProps {
   scrollToAlignment?: string;
 }
 
-export default class Tree extends React.Component<TreeProps> {}
+export class Tree extends React.Component<TreeProps> {}
 
 export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
 
