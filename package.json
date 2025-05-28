@@ -19,7 +19,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "npm-install": "npm install --force"
+    "npm-install": "npm install --force",
+    "pack": "npm pack"
   },
   "dependencies": {
     "classnames": "^2.5.1",
@@ -49,9 +50,11 @@
     "globals": "^16.0.0",
     "immutability-helper": "^3.1.1",
     "prop-types": "^15.8.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-element-to-jsx-string": "^17.0.1",
+    "react-element-to-jsx-string": "^15.0.0",
     "react-lifecycles-compat": "^3.0.4",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.6.0",
