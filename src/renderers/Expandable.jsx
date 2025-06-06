@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -6,7 +6,7 @@ import {submitEvent} from '../eventWrappers';
 import {getNodeRenderOptions, updateNode} from '../selectors/nodes';
 import {Renderer} from '../shapes/rendererShapes';
 
-const Expandable = ({
+const Expandable = forwardRef(({
   onChange,
   node,
   children,
@@ -16,7 +16,7 @@ const Expandable = ({
     collapsed: 'mi mi-keyboard-arrow-right',
     lastChild: '',
   },
-}) => {
+}, ref) => {
   const {hasChildren, isExpanded} = getNodeRenderOptions(node);
   const className = classNames({
     [iconsClassNameMap.expanded]: hasChildren && isExpanded,
@@ -27,14 +27,16 @@ const Expandable = ({
   const handleChange = () => onChange({...updateNode(node, {expanded: !isExpanded}), index});
 
   return (
-    <span onDoubleClick={handleChange}>
+    <span ref={ref} onDoubleClick={handleChange}>
       {hasChildren && (
         <i tabIndex={0} onKeyDown={submitEvent(handleChange)} onClick={handleChange} className={className} />
       )}
       {children}
     </span>
   );
-};
+});
+
+Expandable.displayName = 'Expandable';
 
 Expandable.propTypes = {
   ...Renderer,

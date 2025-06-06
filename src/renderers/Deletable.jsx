@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -6,7 +6,7 @@ import {submitEvent} from '../eventWrappers';
 import {getNodeRenderOptions, deleteNode} from '../selectors/nodes';
 import {Renderer} from '../shapes/rendererShapes';
 
-const Deletable = ({
+const Deletable = forwardRef(({
   onChange,
   node,
   iconsClassNameMap = {
@@ -14,7 +14,7 @@ const Deletable = ({
   },
   children,
   index,
-}) => {
+}, ref) => {
   const {isDeletable} = getNodeRenderOptions(node);
 
   const className = classNames({
@@ -24,14 +24,16 @@ const Deletable = ({
   const handleChange = () => onChange({...deleteNode(node), index});
 
   return (
-    <span>
+    <span ref={ref}>
       {isDeletable && (
         <i tabIndex={0} onKeyDown={submitEvent(handleChange)} onClick={handleChange} className={className} />
       )}
       {children}
     </span>
   );
-};
+});
+
+Deletable.displayName = 'Deletable';
 
 Deletable.propTypes = {
   ...Renderer,

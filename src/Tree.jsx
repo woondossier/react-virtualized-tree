@@ -35,11 +35,12 @@ export default class Tree extends React.Component {
       : nodes[index];
   };
 
-  rowRenderer = ({node, key, measure, style, NodeRenderer, index}) => {
+  rowRenderer = ({node, key, measure, registerChild, style, NodeRenderer, index}) => {
     const {nodeMarginLeft} = this.props;
 
     return (
       <NodeRenderer
+        ref={registerChild}
         key={key}
         style={{
           ...style,

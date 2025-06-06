@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -6,7 +6,7 @@ import {submitEvent} from '../eventWrappers';
 import {getNodeRenderOptions, updateNode} from '../selectors/nodes';
 import {Renderer} from '../shapes/rendererShapes';
 
-const Favorite = ({
+const Favorite = forwardRef(({
   onChange,
   node,
   iconsClassNameMap = {
@@ -15,7 +15,7 @@ const Favorite = ({
   },
   children,
   index,
-}) => {
+}, ref) => {
   const {isFavorite} = getNodeRenderOptions(node);
 
   const className = classNames({
@@ -26,12 +26,12 @@ const Favorite = ({
   const handleChange = () => onChange({...updateNode(node, {favorite: !isFavorite}), index});
 
   return (
-    <span>
+    <span ref={ref}>
       <i tabIndex={0} onKeyDown={submitEvent(handleChange)} onClick={handleChange} className={className} />
       {children}
     </span>
   );
-};
+});
 
 Favorite.propTypes = {
   ...Renderer,
@@ -40,5 +40,7 @@ Favorite.propTypes = {
     notFavorite: PropTypes.string,
   }),
 };
+
+Favorite.displayName = 'Favorite';
 
 export default Favorite;
