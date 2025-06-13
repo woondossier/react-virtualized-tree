@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, forwardRef} from 'react';
 
 import Tree from '../../../src/TreeContainer.jsx';
 import Renderers from '../../../src/renderers';
@@ -110,7 +110,9 @@ const DESCRIPTIONS = {
 
 class FootballPlayerRenderer extends React.Component {
   componentDidMount() {
-    this.props.measure();
+    requestAnimationFrame(() => {
+      this.props.measure();
+    })
   }
 
   render() {
@@ -140,13 +142,13 @@ class NodeMeasure extends Component {
   render() {
     return (
       <Tree nodes={this.state.nodes} onChange={this.handleChange}>
-        {({style, ...p}) => (
-          <div style={style}>
+        {forwardRef(({style, ...p}, ref) => (
+          <div ref={ref} style={style}>
             <FootballPlayerRenderer {...p}>
               <Expandable {...p} />
             </FootballPlayerRenderer>
           </div>
-        )}
+        ))}
       </Tree>
     );
   }

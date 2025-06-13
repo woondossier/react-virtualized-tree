@@ -82,10 +82,10 @@ TreeContainer.propTypes = {
   }),
   nodes: PropTypes.arrayOf(PropTypes.shape(Node)).isRequired,
   onChange: PropTypes.func,
-  children: PropTypes.func.isRequired,
+  children: PropTypes.elementType.isRequired,
   nodeMarginLeft: PropTypes.number,
   width: PropTypes.number,
-  scrollToId: PropTypes.number,
+  scrollToId: PropTypes.number || PropTypes.string,
   scrollToAlignment: PropTypes.string,
 };
 
