@@ -154,16 +154,17 @@ class NodeMeasure extends Component {
   }
 }
 
-export default createEntry(
-  'node-measure',
-  'NodeMeasure',
-  'Nodes with auto measure',
-  <div>
-    <p>All cells in react-virtualized-tree implement react-virtualized's CellMeasurer</p>
-    <p>
-      All nodes receive a measure prop that can be used to measure nodes with different heights like what happens in
-      this example
-    </p>
-  </div>,
-  NodeMeasure,
+const entry = createEntry(
+    'node-measure',
+    'NodeMeasure',
+    'Nodes with auto measure',
+    <div>
+      <p>All cells in react-virtualized-tree implement react-virtualized's CellMeasurer</p>
+      <p>
+        All nodes receive a measure prop that can be used to measure nodes with different heights like what happens in
+        this example
+      </p>
+    </div>,
+    NodeMeasure,
 );
+export default entry;
