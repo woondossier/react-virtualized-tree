@@ -92,7 +92,7 @@ export default class Tree extends React.Component {
 
 Tree.propTypes = {
   nodes: PropTypes.arrayOf(PropTypes.shape(FlattenedNode)).isRequired,
-  NodeRenderer: PropTypes.func.isRequired,
+  NodeRenderer: PropTypes.elementType.isRequired,
   onChange: PropTypes.func.isRequired,
   nodeMarginLeft: PropTypes.number,
   width: PropTypes.number,
