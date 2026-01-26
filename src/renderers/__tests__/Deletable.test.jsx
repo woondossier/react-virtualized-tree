@@ -1,16 +1,16 @@
 import React from 'react';
-import {render, cleanup, fireEvent} from 'react-testing-library';
+import {render, fireEvent} from '@testing-library/react';
+import {vi} from 'vitest';
 
 import Deletable from '../Deletable.jsx';
 import {KEY_CODES} from '../../eventWrappers';
 import {deleteNode} from '../../selectors/nodes';
 
 describe('renderers Deletable', () => {
-  afterEach(cleanup);
 
   const setup = (state = {deletable: true}, extraProps = {}) => {
     const baseProps = {
-      onChange: jest.fn(),
+      onChange: vi.fn(),
       node: {
         id: 1,
         name: 'Node 1',
@@ -18,7 +18,7 @@ describe('renderers Deletable', () => {
         deepness: 0,
         children: [{}],
       },
-      measure: jest.fn(),
+      measure: vi.fn(),
       index: 1,
     };
 

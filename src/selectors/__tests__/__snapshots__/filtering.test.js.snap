@@ -1,41 +1,41 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`filtering selectors should create mappings matching filters 1`] = `
-Object {
-  "0": Array [],
-  "1": Array [],
-  "2": Array [
+exports[`filtering selectors > should create mappings matching filters 1`] = `
+{
+  "0": [],
+  "1": [],
+  "2": [
     0,
   ],
-  "4": Array [
+  "4": [
     0,
     2,
   ],
-  "6": Array [
+  "6": [
     1,
   ],
-  "8": Array [
+  "8": [
     1,
     6,
   ],
 }
 `;
 
-exports[`filtering selectors should filter nodes based on injected filter 1`] = `
-Array [
-  Object {
-    "children": Array [
-      Object {
-        "children": Array [
-          Object {
-            "children": Array [],
+exports[`filtering selectors > should filter nodes based on injected filter 1`] = `
+[
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
             "id": 4,
             "name": "Leaf 4",
           },
         ],
         "id": 2,
         "name": "Leaf 2",
-        "state": Object {
+        "state": {
           "deletable": true,
           "expanded": true,
         },
@@ -43,30 +43,30 @@ Array [
     ],
     "id": 0,
     "name": "Leaf 1",
-    "state": Object {
+    "state": {
       "expanded": true,
     },
   },
-  Object {
-    "children": Array [
-      Object {
-        "children": Array [
-          Object {
-            "children": Array [],
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
             "id": 8,
             "name": "Leaf 9",
           },
         ],
         "id": 6,
         "name": "Leaf 7",
-        "state": Object {
+        "state": {
           "expanded": false,
         },
       },
     ],
     "id": 1,
     "name": "Leaf 6",
-    "state": Object {
+    "state": {
       "deletable": true,
       "expanded": false,
     },

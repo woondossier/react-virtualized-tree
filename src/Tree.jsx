@@ -1,43 +1,48 @@
-import React from 'react';
+import React, { useRef, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import {AutoSizer, List, CellMeasurerCache, CellMeasurer} from 'react-virtualized';
+import { AutoSizer, List, CellMeasurerCache, CellMeasurer } from 'react-virtualized';
 
-import {FlattenedNode} from './shapes/nodeShapes';
-import TreeState, {State} from './state/TreeState';
+import { FlattenedNode } from './shapes/nodeShapes';
+import TreeState, { State } from './state/TreeState';
 
-export default class Tree extends React.Component {
-  _cache = new CellMeasurerCache({
-    fixedWidth: true,
-    minHeight: 20,
-  });
+const Tree = ({
+  nodes,
+  NodeRenderer,
+  onChange,
+  nodeMarginLeft = 30,
+  width,
+  scrollToIndex,
+  scrollToAlignment,
+}) => {
+  const cacheRef = useRef(null);
+  const listRef = useRef(null);
 
-  getRowCount = () => {
-    const {nodes} = this.props;
+  // Initialize cache only once
+  if (!cacheRef.current) {
+    cacheRef.current = new CellMeasurerCache({
+      fixedWidth: true,
+      minHeight: 20,
+    });
+  }
 
+  const getRowCount = useCallback(() => {
     return nodes instanceof State ? nodes.flattenedTree.length : nodes.length;
-  };
+  }, [nodes]);
 
-  getNodeDeepness = (node, index) => {
-    const {nodes} = this.props;
-
+  const getNodeDeepness = useCallback((node, index) => {
     if (nodes instanceof State) {
-      TreeState.getNodeDeepness(nodes, index);
+      return TreeState.getNodeDeepness(nodes, index);
     }
+    return node.deepness;
+  }, [nodes]);
 
-    return nodes instanceof State ? TreeState.getNodeDeepness(nodes, index) : node.deepness;
-  };
-
-  getNode = index => {
-    const {nodes} = this.props;
-
+  const getNode = useCallback((index) => {
     return nodes instanceof State
-      ? {...TreeState.getNodeAt(nodes, index), deepness: this.getNodeDeepness({}, index)}
+      ? { ...TreeState.getNodeAt(nodes, index), deepness: getNodeDeepness({}, index) }
       : nodes[index];
-  };
+  }, [nodes, getNodeDeepness]);
 
-  rowRenderer = ({node, key, measure, registerChild, style, NodeRenderer, index}) => {
-    const {nodeMarginLeft} = this.props;
-
+  const rowRenderer = useCallback(({ node, key, measure, registerChild, style, index }) => {
     return (
       <NodeRenderer
         ref={registerChild}
@@ -49,46 +54,43 @@ export default class Tree extends React.Component {
           cursor: 'pointer',
         }}
         node={node}
-        onChange={this.props.onChange}
+        onChange={onChange}
         measure={measure}
         index={index}
       />
     );
-  };
+  }, [NodeRenderer, nodeMarginLeft, onChange]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  measureRowRenderer = nodes => ({key, index, style, parent}) => {
-    const {NodeRenderer} = this.props;
-    const node = this.getNode(index);
+  const measureRowRenderer = useCallback(({ key, index, style, parent }) => {
+    const node = getNode(index);
 
     return (
-      <CellMeasurer cache={this._cache} columnIndex={0} key={key} rowIndex={index} parent={parent}>
-        {m => this.rowRenderer({...m, index, node, key, style, NodeRenderer})}
+      <CellMeasurer cache={cacheRef.current} columnIndex={0} key={key} rowIndex={index} parent={parent}>
+        {(m) => rowRenderer({ ...m, index, node, key, style })}
       </CellMeasurer>
     );
-  };
+  }, [getNode, rowRenderer]);
 
-  render() {
-    const {nodes, width, scrollToIndex, scrollToAlignment} = this.props;
+  const rowCount = useMemo(() => getRowCount(), [getRowCount]);
 
-    return (
-      <AutoSizer disableWidth={Boolean(width)}>
-        {({height, width: autoWidth}) => (
-          <List
-            deferredMeasurementCache={this._cache}
-            ref={r => (this._list = r)}
-            height={height}
-            rowCount={this.getRowCount()}
-            rowHeight={this._cache.rowHeight}
-            rowRenderer={this.measureRowRenderer(nodes)}
-            width={width || autoWidth}
-            scrollToIndex={scrollToIndex}
-            scrollToAlignment={scrollToAlignment}
-          />
-        )}
-      </AutoSizer>
-    );
-  }
-}
+  return (
+    <AutoSizer disableWidth={Boolean(width)}>
+      {({ height, width: autoWidth }) => (
+        <List
+          deferredMeasurementCache={cacheRef.current}
+          ref={listRef}
+          height={height}
+          rowCount={rowCount}
+          rowHeight={cacheRef.current.rowHeight}
+          rowRenderer={measureRowRenderer}
+          width={width || autoWidth}
+          scrollToIndex={scrollToIndex}
+          scrollToAlignment={scrollToAlignment}
+        />
+      )}
+    </AutoSizer>
+  );
+};
 
 Tree.propTypes = {
   nodes: PropTypes.arrayOf(PropTypes.shape(FlattenedNode)).isRequired,
@@ -99,3 +101,5 @@ Tree.propTypes = {
   scrollToIndex: PropTypes.number,
   scrollToAlignment: PropTypes.string,
 };
+
+export default Tree;

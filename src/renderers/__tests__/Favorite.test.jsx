@@ -1,16 +1,16 @@
 import React from 'react';
-import {render, cleanup, fireEvent} from 'react-testing-library';
+import {render, fireEvent} from '@testing-library/react';
+import {vi} from 'vitest';
 
 import Favorite from '../Favorite.jsx';
 import {KEY_CODES} from '../../eventWrappers';
 import {updateNode} from '../../selectors/nodes';
 
 describe('renderers Favorite', () => {
-  afterEach(cleanup);
 
   const setup = (state = {}, extraProps = {}) => {
     const baseProps = {
-      onChange: jest.fn(),
+      onChange: vi.fn(),
       node: {
         id: 1,
         name: 'Node 1',
@@ -18,7 +18,7 @@ describe('renderers Favorite', () => {
         deepness: 0,
         children: [{}],
       },
-      measure: jest.fn(),
+      measure: vi.fn(),
       index: 1,
     };
 

@@ -2,7 +2,6 @@ import React, {Component, forwardRef} from 'react';
 
 import Tree from '../../../src/TreeContainer.jsx';
 import Renderers from '../../../src/renderers';
-import {createEntry} from '../toolbelt';
 import {getNodeRenderOptions} from '../../../src/selectors/nodes';
 
 const {Expandable} = Renderers;
@@ -154,17 +153,4 @@ class NodeMeasure extends Component {
   }
 }
 
-const entry = createEntry(
-    'node-measure',
-    'NodeMeasure',
-    'Nodes with auto measure',
-    <div>
-      <p>All cells in react-virtualized-tree implement react-virtualized's CellMeasurer</p>
-      <p>
-        All nodes receive a measure prop that can be used to measure nodes with different heights like what happens in
-        this example
-      </p>
-    </div>,
-    NodeMeasure,
-);
-export default entry;
+export default NodeMeasure;

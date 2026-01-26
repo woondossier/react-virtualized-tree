@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import FocusTrap from 'focus-trap-react';
 import Tree from '../../../src/TreeContainer.jsx';
 import {Nodes} from '../../../testData/sampleTree';
-import {createEntry} from '../toolbelt';
 import Renderers from '../../../src/renderers';
 
 const {Expandable, Favorite} = Renderers;
@@ -40,12 +39,4 @@ class KeyboardNavigation extends Component {
   }
 }
 
-export default createEntry(
-  'keyboard-nav',
-  'KeyboardNavigation',
-  'Keyboard navigation',
-  <div>
-    <p>A tree that supports keyboard navigation</p>
-  </div>,
-  KeyboardNavigation,
-);
+export default KeyboardNavigation;

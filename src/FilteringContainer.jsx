@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import classNames from 'classnames';
@@ -14,93 +14,103 @@ const indexByName = (searchTerm) => ({ name }) => {
   return upperCaseName.indexOf(upperCaseSearchTerm.trim()) > -1;
 };
 
-class FilteringContainer extends React.Component {
-  state = {
-    filterText: '',
-    filterTerm: '',
-  };
+const FilteringContainer = ({
+  nodes,
+  children: treeRenderer,
+  groups,
+  selectedGroup,
+  groupRenderer: GroupRenderer = DefaultGroupRenderer, // eslint-disable-line no-unused-vars -- used as JSX
+  onSelectedGroupChange,
+  indexSearch = indexByName,
+  debouncer = debounce,
+}) => {
+  const [filterText, setFilterText] = useState('');
+  const [filterTerm, setFilterTerm] = useState('');
 
-  static defaultProps = {
-    debouncer: debounce,
-    groupRenderer: DefaultGroupRenderer,
-    indexSearch: indexByName,
-  };
-
-  constructor(props) {
-    super(props);
-    this.setFilterTerm = props.debouncer(this.setFilterTerm, 300);
+  // Create a stable debounced setFilterTerm
+  const debouncedSetFilterTerm = useRef(null);
+  if (!debouncedSetFilterTerm.current) {
+    debouncedSetFilterTerm.current = debouncer((text) => {
+      setFilterTerm(text);
+    }, 300);
   }
 
-  setFilterTerm = () => {
-    this.setState((prev) => ({ filterTerm: prev.filterText }));
-  };
+  // Cleanup debounce on unmount
+  useEffect(() => {
+    return () => {
+      if (debouncedSetFilterTerm.current?.cancel) {
+        debouncedSetFilterTerm.current.cancel();
+      }
+    };
+  }, []);
 
-  handleFilterTextChange = (e) => {
-    const filterText = e.target.value;
-    this.setState({ filterText }, this.setFilterTerm);
-  };
+  const handleFilterTextChange = useCallback((e) => {
+    const text = e.target.value;
+    setFilterText(text);
+    debouncedSetFilterTerm.current(text);
+  }, []);
 
-  render() {
-    const { filterTerm, filterText } = this.state;
-    const {
-      nodes,
-      children: treeRenderer,
-      groups,
-      selectedGroup,
-      groupRenderer: GroupRenderer,
-      onSelectedGroupChange,
-      indexSearch,
-    } = this.props;
+  // Memoize relevantNodes calculation
+  const relevantNodes = useMemo(() => {
+    if (groups && selectedGroup && groups[selectedGroup]) {
+      return filterNodes(groups[selectedGroup].filter, nodes);
+    }
+    return { nodes, nodeParentMappings: {} };
+  }, [groups, selectedGroup, nodes]);
 
-    const relevantNodes =
-        groups && selectedGroup && groups[selectedGroup]
-            ? filterNodes(groups[selectedGroup].filter, nodes)
-            : { nodes: this.props.nodes, nodeParentMappings: {} };
+  // Memoize filtered nodes calculation
+  const { nodes: filteredNodes, nodeParentMappings } = useMemo(() => {
+    if (filterTerm) {
+      return filterNodes(indexSearch(filterTerm), relevantNodes.nodes);
+    }
+    return relevantNodes;
+  }, [filterTerm, indexSearch, relevantNodes]);
 
-    const { nodes: filteredNodes, nodeParentMappings } = filterTerm
-        ? filterNodes(indexSearch(filterTerm), relevantNodes.nodes)
-        : relevantNodes;
+  const contextValue = useMemo(() => ({ unfilteredNodes: nodes }), [nodes]);
 
-    return (
-        <TreeContext.Provider value={{ unfilteredNodes: this.props.nodes }}>
-          <div className="tree-filter-container">
-            <div className={classNames('tree-lookup-input', { group: !!groups })}>
-              <input
-                  value={filterText}
-                  onChange={this.handleFilterTextChange}
-                  placeholder="Search..."
-              />
-              <i aria-hidden="true" className="mi mi-11 mi-search" />
-              {groups && (
-                  <GroupRenderer
-                      groups={groups}
-                      selectedGroup={selectedGroup}
-                      onChange={onSelectedGroupChange}
-                  />
-              )}
-            </div>
+  return (
+    <TreeContext.Provider value={contextValue}>
+      <div className="tree-filter-container">
+        <div className={classNames('tree-lookup-input', { group: !!groups })}>
+          <input
+            value={filterText}
+            onChange={handleFilterTextChange}
+            placeholder="Search..."
+          />
+          <i aria-hidden="true" className="mi mi-11 mi-search" />
+          {groups && (
+            <GroupRenderer
+              groups={groups}
+              selectedGroup={selectedGroup}
+              onChange={onSelectedGroupChange}
+            />
+          )}
+        </div>
 
-            {filteredNodes.length === 0 ? (
-                <div style={{ padding: '1rem', color: '#999' }}>
-                  No matching nodes found.
-                </div>
-            ) : (
-                treeRenderer({ nodes: filteredNodes, nodeParentMappings })
-            )}
+        {filteredNodes.length === 0 ? (
+          <div style={{ padding: '1rem', color: '#999' }}>
+            No matching nodes found.
           </div>
-        </TreeContext.Provider>
-    );
-  }
-}
-
-export default FilteringContainer;
+        ) : (
+          treeRenderer({ nodes: filteredNodes, nodeParentMappings })
+        )}
+      </div>
+    </TreeContext.Provider>
+  );
+};
 
 FilteringContainer.propTypes = {
   children: PropTypes.func.isRequired,
+  nodes: PropTypes.array.isRequired,
   debouncer: PropTypes.func,
-  groups: PropTypes.object,
+  groups: PropTypes.objectOf(PropTypes.shape({
+    filter: PropTypes.func.isRequired,
+    name: PropTypes.string,
+  })),
   selectedGroup: PropTypes.string,
   groupRenderer: PropTypes.func,
   onSelectedGroupChange: PropTypes.func,
   indexSearch: PropTypes.func,
 };
+
+export default FilteringContainer;

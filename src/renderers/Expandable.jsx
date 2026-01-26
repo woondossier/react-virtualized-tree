@@ -1,4 +1,4 @@
-import React, {forwardRef} from 'react';
+import React, {forwardRef, memo} from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -6,7 +6,7 @@ import {submitEvent} from '../eventWrappers';
 import {getNodeRenderOptions, updateNode} from '../selectors/nodes';
 import {Renderer} from '../shapes/rendererShapes';
 
-const Expandable = forwardRef(({
+const Expandable = memo(forwardRef(({
   onChange,
   node,
   children,
@@ -34,7 +34,7 @@ const Expandable = forwardRef(({
       {children}
     </span>
   );
-});
+}));
 
 Expandable.displayName = 'Expandable';
 

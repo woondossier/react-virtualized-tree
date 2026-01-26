@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DefaultGroupRenderer > should render an option for each group 1`] = `
+[
+  "All",
+  "Top",
+  "Bottom",
+]
+`;

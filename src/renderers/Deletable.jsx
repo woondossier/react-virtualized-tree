@@ -1,4 +1,4 @@
-import React, {forwardRef} from 'react';
+import React, {forwardRef, memo} from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -6,7 +6,7 @@ import {submitEvent} from '../eventWrappers';
 import {getNodeRenderOptions, deleteNode} from '../selectors/nodes';
 import {Renderer} from '../shapes/rendererShapes';
 
-const Deletable = forwardRef(({
+const Deletable = memo(forwardRef(({
   onChange,
   node,
   iconsClassNameMap = {
@@ -31,7 +31,7 @@ const Deletable = forwardRef(({
       {children}
     </span>
   );
-});
+}));
 
 Deletable.displayName = 'Deletable';
 

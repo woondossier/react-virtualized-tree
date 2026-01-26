@@ -3,7 +3,6 @@ import classNames from 'classnames';
 
 import Tree from '../../../src/TreeContainer.jsx';
 import {Nodes} from '../../../testData/sampleTree';
-import {createEntry} from '../toolbelt';
 
 const Deepness = ({node, children}) => {
   const deepness = node.deepness + 1;
@@ -36,12 +35,4 @@ class Renderers extends Component {
   }
 }
 
-export default createEntry(
-  'renderers',
-  'Renderers',
-  'Create a custom renderer',
-  <div>
-    <p>A tree that makes use of a custom renderer</p>
-  </div>,
-  Renderers,
-);
+export default Renderers;

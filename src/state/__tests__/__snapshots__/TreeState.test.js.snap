@@ -1,84 +1,84 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`TreeState createFromTree should create state when a valid tree is supplied 1`] = `
-Array [
-  Array [
+exports[`TreeState > createFromTree > should create state when a valid tree is supplied 1`] = `
+[
+  [
     0,
   ],
-  Array [
+  [
     0,
     2,
   ],
-  Array [
+  [
     0,
     2,
     3,
   ],
-  Array [
+  [
     0,
     2,
     4,
   ],
-  Array [
+  [
     0,
     5,
   ],
-  Array [
+  [
     1,
   ],
-  Array [
+  [
     "z",
   ],
 ]
 `;
 
-exports[`TreeState getNodeAt should fail with a custom error when supplied rowId does not exist 1`] = `"Tried to get node at row \\"25\\" but got nothing, the tree are 7 visible rows"`;
+exports[`TreeState > getNodeAt > should fail with a custom error when supplied rowId does not exist 1`] = `[Error: Tried to get node at row "25" but got nothing, the tree are 7 visible rows]`;
 
-exports[`TreeState getNodeAt should get a for an existing rowId: 2nd row 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "children": Array [
-        Object {
+exports[`TreeState > getNodeAt > should get a for an existing rowId > 2nd row 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
           "id": "c-3",
           "name": "Leaf 3 Child",
-          "state": Object {},
+          "state": {},
         },
       ],
       "id": 3,
       "name": "Leaf 3",
-      "state": Object {
+      "state": {
         "deletable": true,
         "expanded": false,
         "favorite": true,
       },
     },
-    Object {
+    {
       "id": 4,
       "name": "Leaf 4",
     },
   ],
   "id": 2,
   "name": "Leaf 2",
-  "state": Object {
+  "state": {
     "deletable": true,
     "expanded": true,
   },
 }
 `;
 
-exports[`TreeState getNodeAt should get a for an existing rowId: 3rd row 1`] = `
-Object {
-  "children": Array [
-    Object {
+exports[`TreeState > getNodeAt > should get a for an existing rowId > 3rd row 1`] = `
+{
+  "children": [
+    {
       "id": "c-3",
       "name": "Leaf 3 Child",
-      "state": Object {},
+      "state": {},
     },
   ],
   "id": 3,
   "name": "Leaf 3",
-  "state": Object {
+  "state": {
     "deletable": true,
     "expanded": false,
     "favorite": true,
@@ -86,15 +86,15 @@ Object {
 }
 `;
 
-exports[`TreeState getNodeAt should get a for an existing rowId: 7th row 1`] = `
-Object {
+exports[`TreeState > getNodeAt > should get a for an existing rowId > 7th row 1`] = `
+{
   "id": "z",
   "name": "Leaf z",
-  "state": Object {
+  "state": {
     "deletable": true,
     "favorite": true,
   },
 }
 `;
 
-exports[`TreeState getNodeDeepness should fail with a custom error when supplied rowId does not exist 1`] = `"Tried to get node at row \\"40\\" but got nothing, the tree are 7 visible rows"`;
+exports[`TreeState > getNodeDeepness > should fail with a custom error when supplied rowId does not exist 1`] = `[Error: Tried to get node at row "40" but got nothing, the tree are 7 visible rows]`;

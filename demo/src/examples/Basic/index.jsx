@@ -6,7 +6,6 @@ import update from 'immutability-helper';
 import Tree from '../../../../src/TreeContainer.jsx';
 import Renderers from '../../../../src/renderers';
 import {Nodes} from '../../../../testData/sampleTree';
-import {createEntry} from '../../toolbelt';
 import RendererDragContainer from './RendererDragContainer.jsx';
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from "react-dnd";
@@ -95,7 +94,7 @@ class BasicTree extends Component {
                         <Header as="h4">Available Renderers</Header>
 
                         <Label.Group color="blue">
-                            {renderersAvailableForAdd.map((r, i) => {
+                            {renderersAvailableForAdd.map((r) => {
                                 return (
                                     <Label as="a">
                                         {r.name}
@@ -141,15 +140,4 @@ class BasicTree extends Component {
     }
 }
 
-export default createEntry(
-    'basic-tree',
-    'Basic/index',
-    'Basic Tree',
-    <div>
-        <p>
-            A tree that enables favorite toogle, expansion and deletion, this example only makes use of the default
-            renderers
-        </p>
-    </div>,
-    BasicTree,
-);
+export default BasicTree;

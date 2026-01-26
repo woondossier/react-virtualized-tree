@@ -37,7 +37,7 @@ const getUniqueId = () => {
 };
 
 export const constructTree = (maxDeepness, maxNumberOfChildren, minNumOfNodes, deepness = 1) => {
-  return new Array(minNumOfNodes).fill(deepness).map((si, i) => {
+  return new Array(minNumOfNodes).fill(deepness).map(() => {
     const id = getUniqueId();
     const numberOfChildren = deepness === maxDeepness ? 0 : Math.round(Math.random() * maxNumberOfChildren);
 

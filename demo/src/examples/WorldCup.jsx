@@ -3,7 +3,6 @@ import 'flag-icon-css/css/flag-icons.min.css';
 
 import Tree from '../../../src/TreeContainer.jsx';
 import Renderers from '../../../src/renderers';
-import {createEntry} from '../toolbelt';
 
 const {Expandable} = Renderers;
 
@@ -107,16 +106,4 @@ class WorldCupExample extends Component {
   }
 }
 
-export default createEntry(
-  'world-cup',
-  'WorldCup',
-  'World cup groups',
-  <div>
-    <p>
-      FIFA world cup is back in 2018, in this special example the tree view is used to display the group stage draw
-      results!
-    </p>
-    <p>Let the best team win.</p>
-  </div>,
-  WorldCupExample,
-);
+export default WorldCupExample;

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import Tree from './Tree.jsx';
@@ -19,60 +19,77 @@ const DEFAULT_UPDATE_TYPES = {
 };
 
 const getExtensions = createSelector(
-    (e) => e,
-    (extensions = {}) => {
-      const { updateTypeHandlers = {} } = extensions;
+  (e) => e,
+  (extensions = {}) => {
+    const { updateTypeHandlers = {} } = extensions;
 
-      return {
-        updateTypeHandlers: {
-          ...DEFAULT_UPDATE_TYPES,
-          ...updateTypeHandlers,
-        },
-      };
-    }
+    return {
+      updateTypeHandlers: {
+        ...DEFAULT_UPDATE_TYPES,
+        ...updateTypeHandlers,
+      },
+    };
+  }
 );
 
 const TreeContainer = ({
-                         nodes: propNodes,
-                         onChange,
-                         children,
-                         nodeMarginLeft = 30,
-                         width,
-                         scrollToId,
-                         scrollToAlignment,
-                         extensions,
-                       }) => {
+  nodes: propNodes,
+  onChange,
+  children,
+  nodeMarginLeft = 30,
+  width,
+  scrollToId,
+  scrollToAlignment,
+  extensions,
+}) => {
   const { unfilteredNodes } = useContext(TreeContext);
   const nodes = unfilteredNodes || propNodes;
+  const lastScrollToIdRef = useRef(null);
 
   const { updateTypeHandlers } = getExtensions(extensions);
 
-  const handleChange = ({ node, type }) => {
-    const handler = updateTypeHandlers[type];
-    if (!handler) {
-      console.warn(`No handler for update type: ${type}`);
+  const handleChange = useCallback(
+    ({ node, type }) => {
+      const handler = updateTypeHandlers[type];
+      if (!handler) {
+        console.warn(`No handler for update type: ${type}`);
+        return;
+      }
+
+      const updatedNodes = handler(nodes, node);
+      if (onChange) {
+        onChange(updatedNodes);
+      }
+    },
+    [nodes, onChange, updateTypeHandlers]
+  );
+
+  const flattenedTree = useMemo(() => getFlattenedTree(nodes), [nodes]);
+  const shouldScroll = scrollToId != null && scrollToId !== lastScrollToIdRef.current;
+  const rowIndex = shouldScroll ? getRowIndexFromId(flattenedTree, scrollToId) : -1;
+  const scrollToIndex = shouldScroll && rowIndex > -1 ? rowIndex : undefined;
+
+  useEffect(() => {
+    if (scrollToId == null) {
+      lastScrollToIdRef.current = null;
       return;
     }
 
-    const updatedNodes = handler(nodes, node);
-    if (onChange) {
-      onChange(updatedNodes);
+    if (shouldScroll) {
+      lastScrollToIdRef.current = scrollToId;
     }
-  };
-
-  const flattenedTree = getFlattenedTree(nodes);
-  const rowIndex = getRowIndexFromId(flattenedTree, scrollToId);
+  }, [scrollToId, shouldScroll]);
 
   return (
-      <Tree
-          nodeMarginLeft={nodeMarginLeft}
-          nodes={flattenedTree}
-          onChange={handleChange}
-          NodeRenderer={children}
-          scrollToIndex={rowIndex}
-          scrollToAlignment={scrollToAlignment}
-          width={width}
-      />
+    <Tree
+      nodeMarginLeft={nodeMarginLeft}
+      nodes={flattenedTree}
+      onChange={handleChange}
+      NodeRenderer={children}
+      scrollToIndex={scrollToIndex}
+      scrollToAlignment={scrollToAlignment}
+      width={width}
+    />
   );
 };
 
@@ -85,7 +102,7 @@ TreeContainer.propTypes = {
   children: PropTypes.elementType.isRequired,
   nodeMarginLeft: PropTypes.number,
   width: PropTypes.number,
-  scrollToId: PropTypes.number || PropTypes.string,
+  scrollToId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   scrollToAlignment: PropTypes.string,
 };
 

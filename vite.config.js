@@ -29,6 +29,6 @@ export default defineConfig({
                 },
             },
         },
-        minify: false,
+        minify: true,
     }
 })

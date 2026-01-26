@@ -3,7 +3,7 @@ import {Checkbox} from 'semantic-ui-react';
 
 import Tree from '../../../src/TreeContainer.jsx';
 import Renderers from '../../../src/renderers';
-import {createEntry, constructTree} from '../toolbelt';
+import {constructTree} from '../toolbelt';
 import FilteringContainer from '../../../src/FilteringContainer.jsx';
 import Favorite from '../../../src/renderers/Favorite.jsx';
 
@@ -30,7 +30,7 @@ class Filterable extends Component {
           groups: {
             ALL: {
               name: 'All',
-              filter: node => true,
+              filter: () => true,
             },
             [EXPANDED]: {
               name: 'Expanded',
@@ -47,7 +47,7 @@ class Filterable extends Component {
       : {};
   }
 
-  handleChange = nodes => {
+  handleChange = () => {
     // this.setState({nodes});
   };
 
@@ -91,18 +91,4 @@ class Filterable extends Component {
   }
 }
 
-const entry = createEntry(
-    'filterable',
-    'Filterable',
-    'Filterable tree',
-    <div>
-        <p>When working with big data collections filtering can be very handy.</p>
-
-        <p>
-            By wrapping the Tree with the <code>FilteringContainer</code> your tree will only recieve the nodes it needs to
-            render.
-        </p>
-    </div>,
-    Filterable,
-);
-export default entry;
+export default Filterable;

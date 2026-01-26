@@ -1,12 +1,13 @@
 import React from 'react';
-import {render, cleanup, fireEvent} from 'react-testing-library';
+import {render, fireEvent} from '@testing-library/react';
+import {vi} from 'vitest';
 
 import DefaultGroupRenderer from '../DefaultGroupRenderer.jsx';
 
 describe('DefaultGroupRenderer', () => {
   const setup = (extraProps = {}) => {
     const props = {
-      onChange: jest.fn(),
+      onChange: vi.fn(),
       groups: {
         ALL: {
           name: 'All',

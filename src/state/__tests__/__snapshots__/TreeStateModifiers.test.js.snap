@@ -1,105 +1,105 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`TreeStateModifiers deleteNodeAt flattened tree should delete a child node with expanded children 1`] = `
-Array [
-  Array [
+exports[`TreeStateModifiers > deleteNodeAt > flattened tree > should delete a child node with expanded children 1`] = `
+[
+  [
     0,
   ],
-  Array [
+  [
     0,
     5,
   ],
-  Array [
+  [
     1,
   ],
-  Array [
+  [
     "z",
   ],
 ]
 `;
 
-exports[`TreeStateModifiers deleteNodeAt flattened tree should delete a child node without expanded children 1`] = `
-Array [
-  Array [
+exports[`TreeStateModifiers > deleteNodeAt > flattened tree > should delete a child node without expanded children 1`] = `
+[
+  [
     0,
   ],
-  Array [
+  [
     0,
     2,
   ],
-  Array [
+  [
     0,
     2,
     4,
   ],
-  Array [
+  [
     0,
     5,
   ],
-  Array [
+  [
     1,
   ],
-  Array [
+  [
     "z",
   ],
 ]
 `;
 
-exports[`TreeStateModifiers deleteNodeAt flattened tree should delete a root node with expanded children 1`] = `
-Array [
-  Array [
+exports[`TreeStateModifiers > deleteNodeAt > flattened tree > should delete a root node with expanded children 1`] = `
+[
+  [
     1,
   ],
-  Array [
+  [
     "z",
   ],
 ]
 `;
 
-exports[`TreeStateModifiers deleteNodeAt flattened tree should delete a root node without expanded children 1`] = `
-Array [
-  Array [
+exports[`TreeStateModifiers > deleteNodeAt > flattened tree > should delete a root node without expanded children 1`] = `
+[
+  [
     0,
   ],
-  Array [
+  [
     0,
     2,
   ],
-  Array [
+  [
     0,
     2,
     3,
   ],
-  Array [
+  [
     0,
     2,
     4,
   ],
-  Array [
+  [
     0,
     5,
   ],
-  Array [
+  [
     "z",
   ],
 ]
 `;
 
-exports[`TreeStateModifiers deleteNodeAt should fail with descriptive error when node at index does not exist 1`] = `"Tried to get node at row \\"20\\" but got nothing, the tree are 7 visible rows"`;
+exports[`TreeStateModifiers > deleteNodeAt > should fail with descriptive error when node at index does not exist 1`] = `[Error: Tried to get node at row "20" but got nothing, the tree are 7 visible rows]`;
 
-exports[`TreeStateModifiers deleteNodeAt tree should delete a child node with expanded children 1`] = `
-Array [
+exports[`TreeStateModifiers > deleteNodeAt > tree > should delete a child node with expanded children 1`] = `
+[
   DiffArray {
     "index": 1,
     "item": DiffDeleted {
       "kind": "D",
-      "lhs": Object {
+      "lhs": {
         "id": 5,
         "name": "Leaf 5",
       },
     },
     "kind": "A",
-    "path": Array [
+    "path": [
       0,
       "children",
     ],
@@ -107,7 +107,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": 2,
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -118,7 +118,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": "Leaf 2",
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -128,11 +128,11 @@ Array [
   },
   DiffDeleted {
     "kind": "D",
-    "lhs": Object {
+    "lhs": {
       "deletable": true,
       "expanded": true,
     },
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -141,29 +141,29 @@ Array [
   },
   DiffDeleted {
     "kind": "D",
-    "lhs": Array [
-      Object {
-        "children": Array [
-          Object {
+    "lhs": [
+      {
+        "children": [
+          {
             "id": "c-3",
             "name": "Leaf 3 Child",
-            "state": Object {},
+            "state": {},
           },
         ],
         "id": 3,
         "name": "Leaf 3",
-        "state": Object {
+        "state": {
           "deletable": true,
           "expanded": false,
           "favorite": true,
         },
       },
-      Object {
+      {
         "id": 4,
         "name": "Leaf 4",
       },
     ],
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -173,19 +173,19 @@ Array [
 ]
 `;
 
-exports[`TreeStateModifiers deleteNodeAt tree should delete a child node without expanded children 1`] = `
-Array [
+exports[`TreeStateModifiers > deleteNodeAt > tree > should delete a child node without expanded children 1`] = `
+[
   DiffArray {
     "index": 1,
     "item": DiffDeleted {
       "kind": "D",
-      "lhs": Object {
+      "lhs": {
         "id": 4,
         "name": "Leaf 4",
       },
     },
     "kind": "A",
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -195,7 +195,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": 3,
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -208,7 +208,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": "Leaf 3",
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -220,12 +220,12 @@ Array [
   },
   DiffDeleted {
     "kind": "D",
-    "lhs": Object {
+    "lhs": {
       "deletable": true,
       "expanded": false,
       "favorite": true,
     },
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -236,14 +236,14 @@ Array [
   },
   DiffDeleted {
     "kind": "D",
-    "lhs": Array [
-      Object {
+    "lhs": [
+      {
         "id": "c-3",
         "name": "Leaf 3 Child",
-        "state": Object {},
+        "state": {},
       },
     ],
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -255,16 +255,16 @@ Array [
 ]
 `;
 
-exports[`TreeStateModifiers deleteNodeAt tree should delete a root node with expanded children 1`] = `
-Array [
+exports[`TreeStateModifiers > deleteNodeAt > tree > should delete a root node with expanded children 1`] = `
+[
   DiffArray {
     "index": 2,
     "item": DiffDeleted {
       "kind": "D",
-      "lhs": Object {
+      "lhs": {
         "id": "z",
         "name": "Leaf z",
-        "state": Object {
+        "state": {
           "deletable": true,
           "favorite": true,
         },
@@ -275,7 +275,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": 1,
-    "path": Array [
+    "path": [
       1,
       "id",
     ],
@@ -284,7 +284,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": "Leaf 6",
-    "path": Array [
+    "path": [
       1,
       "name",
     ],
@@ -293,7 +293,7 @@ Array [
   DiffDeleted {
     "kind": "D",
     "lhs": false,
-    "path": Array [
+    "path": [
       1,
       "state",
       "expanded",
@@ -301,7 +301,7 @@ Array [
   },
   DiffNew {
     "kind": "N",
-    "path": Array [
+    "path": [
       1,
       "state",
       "favorite",
@@ -310,30 +310,30 @@ Array [
   },
   DiffDeleted {
     "kind": "D",
-    "lhs": Array [
-      Object {
-        "children": Array [
-          Object {
+    "lhs": [
+      {
+        "children": [
+          {
             "id": 7,
             "name": "Leaf 8",
           },
-          Object {
+          {
             "id": 8,
             "name": "Leaf 9",
           },
         ],
         "id": 6,
         "name": "Leaf 7",
-        "state": Object {
+        "state": {
           "expanded": false,
         },
       },
-      Object {
+      {
         "id": 9,
         "name": "Leaf 10",
       },
     ],
-    "path": Array [
+    "path": [
       1,
       "children",
     ],
@@ -341,7 +341,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": 0,
-    "path": Array [
+    "path": [
       0,
       "id",
     ],
@@ -350,7 +350,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": "Leaf 1",
-    "path": Array [
+    "path": [
       0,
       "name",
     ],
@@ -359,7 +359,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": true,
-    "path": Array [
+    "path": [
       0,
       "state",
       "expanded",
@@ -368,7 +368,7 @@ Array [
   },
   DiffNew {
     "kind": "N",
-    "path": Array [
+    "path": [
       0,
       "state",
       "deletable",
@@ -378,7 +378,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": 5,
-    "path": Array [
+    "path": [
       0,
       "children",
       1,
@@ -389,7 +389,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": "Leaf 5",
-    "path": Array [
+    "path": [
       0,
       "children",
       1,
@@ -400,7 +400,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": 2,
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -411,7 +411,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": "Leaf 2",
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -422,7 +422,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": true,
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -434,7 +434,7 @@ Array [
   DiffDeleted {
     "kind": "D",
     "lhs": true,
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -445,7 +445,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": 4,
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -458,7 +458,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": "Leaf 4",
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -471,7 +471,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": 3,
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -484,7 +484,7 @@ Array [
   DiffEdit {
     "kind": "E",
     "lhs": "Leaf 3",
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -496,12 +496,12 @@ Array [
   },
   DiffDeleted {
     "kind": "D",
-    "lhs": Object {
+    "lhs": {
       "deletable": true,
       "expanded": false,
       "favorite": true,
     },
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -512,14 +512,14 @@ Array [
   },
   DiffDeleted {
     "kind": "D",
-    "lhs": Array [
-      Object {
+    "lhs": [
+      {
         "id": "c-3",
         "name": "Leaf 3 Child",
-        "state": Object {},
+        "state": {},
       },
     ],
-    "path": Array [
+    "path": [
       0,
       "children",
       0,
@@ -531,16 +531,16 @@ Array [
 ]
 `;
 
-exports[`TreeStateModifiers deleteNodeAt tree should delete a root node without expanded children 1`] = `
-Array [
+exports[`TreeStateModifiers > deleteNodeAt > tree > should delete a root node without expanded children 1`] = `
+[
   DiffArray {
     "index": 2,
     "item": DiffDeleted {
       "kind": "D",
-      "lhs": Object {
+      "lhs": {
         "id": "z",
         "name": "Leaf z",
-        "state": Object {
+        "state": {
           "deletable": true,
           "favorite": true,
         },
@@ -551,146 +551,146 @@ Array [
 ]
 `;
 
-exports[`TreeStateModifiers editNodeAt flattened tree should collapse a node in a children node 1`] = `
-Array [
-  Array [
+exports[`TreeStateModifiers > editNodeAt > flattened tree > should collapse a node in a children node 1`] = `
+[
+  [
     0,
   ],
-  Array [
+  [
     0,
     2,
   ],
-  Array [
+  [
     0,
     5,
   ],
-  Array [
+  [
     1,
   ],
-  Array [
+  [
     "z",
   ],
 ]
 `;
 
-exports[`TreeStateModifiers editNodeAt flattened tree should collapse a node in a root node 1`] = `
-Array [
-  Array [
+exports[`TreeStateModifiers > editNodeAt > flattened tree > should collapse a node in a root node 1`] = `
+[
+  [
     0,
   ],
-  Array [
+  [
     1,
   ],
-  Array [
+  [
     "z",
   ],
 ]
 `;
 
-exports[`TreeStateModifiers editNodeAt flattened tree should expand a node in a children node 1`] = `
-Array [
-  Array [
+exports[`TreeStateModifiers > editNodeAt > flattened tree > should expand a node in a children node 1`] = `
+[
+  [
     0,
   ],
-  Array [
+  [
     0,
     2,
   ],
-  Array [
+  [
     0,
     2,
     3,
   ],
-  Array [
+  [
     0,
     2,
     3,
     "c-3",
   ],
-  Array [
+  [
     0,
     2,
     4,
   ],
-  Array [
+  [
     0,
     5,
   ],
-  Array [
+  [
     1,
   ],
-  Array [
+  [
     "z",
   ],
 ]
 `;
 
-exports[`TreeStateModifiers editNodeAt flattened tree should expand a node in a root node 1`] = `
-Array [
-  Array [
+exports[`TreeStateModifiers > editNodeAt > flattened tree > should expand a node in a root node 1`] = `
+[
+  [
     0,
   ],
-  Array [
+  [
     0,
     2,
   ],
-  Array [
+  [
     0,
     2,
     3,
   ],
-  Array [
+  [
     0,
     2,
     4,
   ],
-  Array [
+  [
     0,
     5,
   ],
-  Array [
+  [
     1,
   ],
-  Array [
+  [
     1,
     6,
   ],
-  Array [
+  [
     1,
     9,
   ],
-  Array [
+  [
     "z",
   ],
 ]
 `;
 
-exports[`TreeStateModifiers editNodeAt should fail with descriptive error when node at index does not exist 1`] = `"Tried to get node at row \\"20\\" but got nothing, the tree are 7 visible rows"`;
+exports[`TreeStateModifiers > editNodeAt > should fail with descriptive error when node at index does not exist 1`] = `[Error: Tried to get node at row "20" but got nothing, the tree are 7 visible rows]`;
 
-exports[`TreeStateModifiers editNodeAt tree should create state for a child node and keep the rest intact 1`] = `
+exports[`TreeStateModifiers > editNodeAt > tree > should create state for a child node and keep the rest intact 1`] = `
 DiffNew {
   "kind": "N",
-  "path": Array [
+  "path": [
     0,
     "children",
     1,
     "state",
   ],
-  "rhs": Object {
+  "rhs": {
     "expanded": true,
   },
 }
 `;
 
-exports[`TreeStateModifiers editNodeAt tree should delete state for a child node and keep the rest intact 1`] = `
+exports[`TreeStateModifiers > editNodeAt > tree > should delete state for a child node and keep the rest intact 1`] = `
 DiffDeleted {
   "kind": "D",
-  "lhs": Object {
+  "lhs": {
     "deletable": true,
     "expanded": false,
     "favorite": true,
   },
-  "path": Array [
+  "path": [
     0,
     "children",
     0,
@@ -701,25 +701,25 @@ DiffDeleted {
 }
 `;
 
-exports[`TreeStateModifiers editNodeAt tree should delete state for a root node and keep the rest intact 1`] = `
+exports[`TreeStateModifiers > editNodeAt > tree > should delete state for a root node and keep the rest intact 1`] = `
 DiffDeleted {
   "kind": "D",
-  "lhs": Object {
+  "lhs": {
     "deletable": true,
     "expanded": false,
   },
-  "path": Array [
+  "path": [
     1,
     "state",
   ],
 }
 `;
 
-exports[`TreeStateModifiers editNodeAt tree should update a child node and keep the rest intact 1`] = `
+exports[`TreeStateModifiers > editNodeAt > tree > should update a child node and keep the rest intact 1`] = `
 DiffEdit {
   "kind": "E",
   "lhs": "Leaf 3",
-  "path": Array [
+  "path": [
     0,
     "children",
     0,
@@ -731,11 +731,11 @@ DiffEdit {
 }
 `;
 
-exports[`TreeStateModifiers editNodeAt tree should update a child node state and keep the rest intact 1`] = `
+exports[`TreeStateModifiers > editNodeAt > tree > should update a child node state and keep the rest intact 1`] = `
 DiffEdit {
   "kind": "E",
   "lhs": true,
-  "path": Array [
+  "path": [
     0,
     "children",
     0,
@@ -746,11 +746,11 @@ DiffEdit {
 }
 `;
 
-exports[`TreeStateModifiers editNodeAt tree should update a node in the root and keep the rest intact 1`] = `
+exports[`TreeStateModifiers > editNodeAt > tree > should update a node in the root and keep the rest intact 1`] = `
 DiffEdit {
   "kind": "E",
   "lhs": "Leaf 1",
-  "path": Array [
+  "path": [
     0,
     "name",
   ],
@@ -758,12 +758,12 @@ DiffEdit {
 }
 `;
 
-exports[`TreeStateModifiers editNodeAt tree should update a node state in the root and keep the rest intact 1`] = `
-Array [
+exports[`TreeStateModifiers > editNodeAt > tree > should update a node state in the root and keep the rest intact 1`] = `
+[
   DiffEdit {
     "kind": "E",
     "lhs": false,
-    "path": Array [
+    "path": [
       1,
       "state",
       "expanded",
@@ -773,7 +773,7 @@ Array [
   DiffDeleted {
     "kind": "D",
     "lhs": true,
-    "path": Array [
+    "path": [
       1,
       "state",
       "deletable",

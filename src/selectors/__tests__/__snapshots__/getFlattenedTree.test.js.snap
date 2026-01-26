@@ -1,40 +1,40 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`getFlattenedTree should match snapshot 1`] = `
-Array [
-  Object {
-    "children": Array [
-      Object {
-        "children": Array [
-          Object {
-            "children": Array [
-              Object {
+exports[`getFlattenedTree > should match snapshot 1`] = `
+[
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [
+              {
                 "id": "c-3",
                 "name": "Leaf 3 Child",
-                "state": Object {},
+                "state": {},
               },
             ],
             "id": 3,
             "name": "Leaf 3",
-            "state": Object {
+            "state": {
               "deletable": true,
               "expanded": false,
               "favorite": true,
             },
           },
-          Object {
+          {
             "id": 4,
             "name": "Leaf 4",
           },
         ],
         "id": 2,
         "name": "Leaf 2",
-        "state": Object {
+        "state": {
           "deletable": true,
           "expanded": true,
         },
       },
-      Object {
+      {
         "id": 5,
         "name": "Leaf 5",
       },
@@ -42,30 +42,30 @@ Array [
     "deepness": 0,
     "id": 0,
     "name": "Leaf 1",
-    "parents": Array [],
-    "state": Object {
+    "parents": [],
+    "state": {
       "expanded": true,
     },
   },
-  Object {
-    "children": Array [
-      Object {
-        "children": Array [
-          Object {
+  {
+    "children": [
+      {
+        "children": [
+          {
             "id": "c-3",
             "name": "Leaf 3 Child",
-            "state": Object {},
+            "state": {},
           },
         ],
         "id": 3,
         "name": "Leaf 3",
-        "state": Object {
+        "state": {
           "deletable": true,
           "expanded": false,
           "favorite": true,
         },
       },
-      Object {
+      {
         "id": 4,
         "name": "Leaf 4",
       },
@@ -73,72 +73,72 @@ Array [
     "deepness": 1,
     "id": 2,
     "name": "Leaf 2",
-    "parents": Array [
+    "parents": [
       0,
     ],
-    "state": Object {
+    "state": {
       "deletable": true,
       "expanded": true,
     },
   },
-  Object {
-    "children": Array [
-      Object {
+  {
+    "children": [
+      {
         "id": "c-3",
         "name": "Leaf 3 Child",
-        "state": Object {},
+        "state": {},
       },
     ],
     "deepness": 2,
     "id": 3,
     "name": "Leaf 3",
-    "parents": Array [
+    "parents": [
       0,
       2,
     ],
-    "state": Object {
+    "state": {
       "deletable": true,
       "expanded": false,
       "favorite": true,
     },
   },
-  Object {
+  {
     "deepness": 2,
     "id": 4,
     "name": "Leaf 4",
-    "parents": Array [
+    "parents": [
       0,
       2,
     ],
   },
-  Object {
+  {
     "deepness": 1,
     "id": 5,
     "name": "Leaf 5",
-    "parents": Array [
+    "parents": [
       0,
     ],
   },
-  Object {
-    "children": Array [
-      Object {
-        "children": Array [
-          Object {
+  {
+    "children": [
+      {
+        "children": [
+          {
             "id": 7,
             "name": "Leaf 8",
           },
-          Object {
+          {
             "id": 8,
             "name": "Leaf 9",
           },
         ],
         "id": 6,
         "name": "Leaf 7",
-        "state": Object {
+        "state": {
           "expanded": false,
         },
       },
-      Object {
+      {
         "id": 9,
         "name": "Leaf 10",
       },
@@ -146,18 +146,18 @@ Array [
     "deepness": 0,
     "id": 1,
     "name": "Leaf 6",
-    "parents": Array [],
-    "state": Object {
+    "parents": [],
+    "state": {
       "deletable": true,
       "expanded": false,
     },
   },
-  Object {
+  {
     "deepness": 0,
     "id": "z",
     "name": "Leaf z",
-    "parents": Array [],
-    "state": Object {
+    "parents": [],
+    "state": {
       "deletable": true,
       "favorite": true,
     },
@@ -166,32 +166,32 @@ Array [
 `;
 
 exports[`getFlattenedTreePaths, should match snapshot 1`] = `
-Array [
-  Array [
+[
+  [
     0,
   ],
-  Array [
+  [
     0,
     2,
   ],
-  Array [
+  [
     0,
     2,
     3,
   ],
-  Array [
+  [
     0,
     2,
     4,
   ],
-  Array [
+  [
     0,
     5,
   ],
-  Array [
+  [
     1,
   ],
-  Array [
+  [
     "z",
   ],
 ]

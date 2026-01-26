@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import Tree from '../../../src/TreeContainer.jsx';
 import Renderers from '../../../src/renderers';
 import {Nodes} from '../../../testData/sampleTree';
-import {createEntry} from '../toolbelt';
 
 const {Expandable} = Renderers;
 
@@ -99,19 +98,4 @@ class Extensions extends Component {
   }
 }
 
-export default createEntry(
-  'extensions',
-  'Extensions',
-  'Extending behaviour',
-  <div>
-    <p>
-      A good example of a possible extension is creating a new handler to select nodes that automatically selects all
-      the children nodes.
-    </p>
-
-    <p>
-      By injecting <code>extensions</code> prop with an update type handler for node selection that can be achieved.
-    </p>
-  </div>,
-  Extensions,
-);
+export default Extensions;

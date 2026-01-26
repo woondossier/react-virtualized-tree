@@ -1,9 +1,58 @@
-export const wrapKeyDownEvent = availablekeys => handler => ({keyCode}, ...params) => {
-  if (keyCode in availablekeys) {
+/**
+ * Modern event wrapper using event.key instead of deprecated keyCode
+ * @param {string[]} allowedKeys - Array of key values to listen for (e.g., ['Enter', ' '])
+ * @returns {function} - Event handler wrapper
+ */
+export const wrapKeyDownEvent = (allowedKeys) => (handler) => (event, ...params) => {
+  if (allowedKeys.includes(event.key)) {
+    event.preventDefault();
     handler(...params);
   }
 };
 
+/**
+ * Key constants using modern event.key values
+ */
+export const KEYS = {
+  Backspace: 'Backspace',
+  Tab: 'Tab',
+  Enter: 'Enter',
+  Shift: 'Shift',
+  Control: 'Control',
+  Alt: 'Alt',
+  Pause: 'Pause',
+  CapsLock: 'CapsLock',
+  Escape: 'Escape',
+  Space: ' ',
+  PageUp: 'PageUp',
+  PageDown: 'PageDown',
+  End: 'End',
+  Home: 'Home',
+  ArrowLeft: 'ArrowLeft',
+  ArrowUp: 'ArrowUp',
+  ArrowRight: 'ArrowRight',
+  ArrowDown: 'ArrowDown',
+  Insert: 'Insert',
+  Delete: 'Delete',
+  Meta: 'Meta',
+  F1: 'F1',
+  F2: 'F2',
+  F3: 'F3',
+  F4: 'F4',
+  F5: 'F5',
+  F6: 'F6',
+  F7: 'F7',
+  F8: 'F8',
+  F9: 'F9',
+  F10: 'F10',
+  F11: 'F11',
+  F12: 'F12',
+};
+
+/**
+ * @deprecated Use KEYS instead. KEY_CODES are deprecated in favor of event.key
+ * Kept for backwards compatibility
+ */
 export const KEY_CODES = {
   Backspace: 8,
   Tab: 9,
@@ -104,4 +153,7 @@ export const KEY_CODES = {
   SingleQuote: 222,
 };
 
-export const submitEvent = wrapKeyDownEvent({[KEY_CODES.Enter]: null});
+/**
+ * Handler for submit-like events (Enter key and Space for accessibility)
+ */
+export const submitEvent = wrapKeyDownEvent([KEYS.Enter, KEYS.Space]);
