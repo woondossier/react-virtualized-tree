@@ -1,0 +1,75 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`filtering selectors > should create mappings matching filters 1`] = `
+{
+  "0": [],
+  "1": [],
+  "2": [
+    0,
+  ],
+  "4": [
+    0,
+    2,
+  ],
+  "6": [
+    1,
+  ],
+  "8": [
+    1,
+    6,
+  ],
+}
+`;
+
+exports[`filtering selectors > should filter nodes based on injected filter 1`] = `
+[
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "id": 4,
+            "name": "Leaf 4",
+          },
+        ],
+        "id": 2,
+        "name": "Leaf 2",
+        "state": {
+          "deletable": true,
+          "expanded": true,
+        },
+      },
+    ],
+    "id": 0,
+    "name": "Leaf 1",
+    "state": {
+      "expanded": true,
+    },
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "id": 8,
+            "name": "Leaf 9",
+          },
+        ],
+        "id": 6,
+        "name": "Leaf 7",
+        "state": {
+          "expanded": false,
+        },
+      },
+    ],
+    "id": 1,
+    "name": "Leaf 6",
+    "state": {
+      "deletable": true,
+      "expanded": false,
+    },
+  },
+]
+`;

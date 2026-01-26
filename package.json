@@ -1,22 +1,23 @@
 {
   "name": "@innobrix/react-virtualized-tree",
   "private": false,
-  "version": "0.0.8",
+  "version": "0.0.9",
   "type": "module",
   "repository": "https://github.com/woondossier/react-virtualized-tree",
   "main": "dist/react-virtualized-tree.cjs.js",
   "module": "dist/react-virtualized-tree.es.js",
   "unpkg": "dist/react-virtualized-tree.umd.js",
+  "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "require": "./dist/react-virtualized-tree.cjs.js",
       "import": "./dist/react-virtualized-tree.es.js"
     }
   },
   "files": [
     "dist",
-    "README.md",
-    "index.d.ts"
+    "README.md"
   ],
   "scripts": {
     "dev": "vite",
@@ -25,13 +26,13 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "bench": "vitest bench --config vitest.bench.config.js",
+    "typecheck": "tsc --noEmit",
+    "bench": "vitest bench --config vitest.bench.config.ts",
     "npm-install": "npm install --force",
     "pack": "npm pack"
   },
   "dependencies": {
     "classnames": "^2.5.1",
-    "lodash.debounce": "^4.0.8",
     "material-icons": "^1.13.14",
     "reselect": "^5.1.1"
   },
@@ -44,9 +45,13 @@
     "@eslint/js": "^9.39.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
+    "@types/deep-diff": "^1.0.5",
+    "@types/deep-freeze": "^0.1.5",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "@types/react-virtualized": "^9.22.3",
     "@vitejs/plugin-react": "^5.1.2",
+    "@vitest/coverage-v8": "^4.0.18",
     "deep-diff": "^1.0.2",
     "deep-freeze": "^0.0.1",
     "eslint": "^9.39.2",
@@ -70,7 +75,10 @@
     "rollup-plugin-visualizer": "^6.0.5",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^3.0.0-beta.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.53.1",
     "vite": "^7.3.1",
+    "vite-plugin-dts": "^4.5.4",
     "vitest": "^4.0.18"
   }
 }
