@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { createSelector } from 'reselect';
 
 import Tree from './Tree';
@@ -10,8 +10,6 @@ import type {
   TreeContainerProps,
   Extensions,
   NodeAction,
-  Node,
-  FlattenedNode,
   NodeId,
   UpdateTypeHandler,
 } from './types';
@@ -48,6 +46,7 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
   scrollToId,
   scrollToAlignment,
   extensions,
+  onScrollComplete,
 }) => {
   const { unfilteredNodes } = useContext(TreeContext);
   const nodes = unfilteredNodes || propNodes;
@@ -55,23 +54,31 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
 
   const { updateTypeHandlers } = getExtensions(extensions);
 
+  // Use refs to avoid recreating handleChange when dependencies change
+  const nodesRef = useRef(nodes);
+  const onChangeRef = useRef(onChange);
+  const updateTypeHandlersRef = useRef(updateTypeHandlers);
+  nodesRef.current = nodes;
+  onChangeRef.current = onChange;
+  updateTypeHandlersRef.current = updateTypeHandlers;
+
   const handleChange = useCallback(
     ({ node, type }: NodeAction) => {
-      const handler = updateTypeHandlers[type];
+      const handler = updateTypeHandlersRef.current[type];
       if (!handler) {
         console.warn(`No handler for update type: ${type}`);
         return;
       }
 
-      const updatedNodes = handler(nodes, node);
-      if (onChange) {
-        onChange(updatedNodes);
+      const updatedNodes = handler(nodesRef.current, node);
+      if (onChangeRef.current) {
+        onChangeRef.current(updatedNodes);
       }
     },
-    [nodes, onChange, updateTypeHandlers]
+    []
   );
 
-  const flattenedTree = useMemo(() => getFlattenedTree(nodes), [nodes]);
+  const flattenedTree = getFlattenedTree(nodes);
   const shouldScroll = scrollToId != null && scrollToId !== lastScrollToIdRef.current;
   const rowIndex = shouldScroll ? getRowIndexFromId(flattenedTree, scrollToId) : -1;
   const scrollToIndex = shouldScroll && rowIndex > -1 ? rowIndex : undefined;
@@ -84,8 +91,9 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
 
     if (shouldScroll) {
       lastScrollToIdRef.current = scrollToId;
+      onScrollComplete?.();
     }
-  }, [scrollToId, shouldScroll]);
+  }, [scrollToId, shouldScroll, onScrollComplete]);
 
   return (
     <Tree

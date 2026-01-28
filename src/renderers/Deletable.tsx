@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { submitEvent } from '../eventWrappers';
 import { getNodeRenderOptions, deleteNode } from '../selectors/nodes';
-import type { DeletableRendererProps, DeletableIconsClassNameMap } from '../types';
+import type { DeletableRendererProps } from '../types';
 
 const Deletable = memo(
   forwardRef<HTMLSpanElement, DeletableRendererProps>(

@@ -3,7 +3,7 @@ import 'flag-icon-css/css/flag-icons.min.css';
 
 import Tree from '../../../src/TreeContainer';
 import renderers from '../../../src/renderers';
-import type { Node, RendererProps, NodeId } from '../../../src';
+import type { Node, RendererProps } from '../../../src';
 
 const { Expandable } = renderers;
 

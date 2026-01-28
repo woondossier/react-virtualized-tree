@@ -1,11 +1,11 @@
-import { describe, bench } from 'vitest';
-import { getFlattenedTree, getFlattenedTreePaths } from './getFlattenedTree';
+import {describe, bench} from 'vitest';
+import {getFlattenedTree, getFlattenedTreeOriginal, getFlattenedTreePaths} from './getFlattenedTree';
 import {
-  generateTree,
-  generateWideTree,
-  generateDeepTree,
-  countNodes,
-  TREE_SIZES,
+    generateTree,
+    generateWideTree,
+    generateDeepTree,
+    countNodes,
+    TREE_SIZES,
 } from '../test/benchUtils';
 
 // Pre-generate trees to avoid generation overhead in benchmarks
@@ -25,65 +25,98 @@ console.log(`  XLarge: ${countNodes(xlargeTree)} nodes`);
 console.log(`  Wide: ${countNodes(wideTree)} nodes`);
 console.log(`  Deep: ${countNodes(deepTree)} nodes`);
 
-describe('getFlattenedTree', () => {
-  describe('by tree size', () => {
-    bench('small tree (~40 nodes)', () => {
-      getFlattenedTree(smallTree);
+describe('getFlattenedTree - Original vs Optimized', () => {
+    describe('small tree (~40 nodes)', () => {
+        bench('original (spread)', () => {
+            getFlattenedTreeOriginal(smallTree);
+        });
+
+        bench('optimized (mutation)', () => {
+            getFlattenedTree(smallTree);
+        });
     });
 
-    bench('medium tree (~780 nodes)', () => {
-      getFlattenedTree(mediumTree);
+    describe('medium tree (~780 nodes)', () => {
+        bench('original (spread)', () => {
+            getFlattenedTreeOriginal(mediumTree);
+        });
+
+        bench('optimized (mutation)', () => {
+            getFlattenedTree(mediumTree);
+        });
     });
 
-    bench('large tree (~3,900 nodes)', () => {
-      getFlattenedTree(largeTree);
+    describe('large tree (~3,900 nodes)', () => {
+        bench('original (spread)', () => {
+            getFlattenedTreeOriginal(largeTree);
+        });
+
+        bench('optimized (mutation)', () => {
+            getFlattenedTree(largeTree);
+        });
     });
 
-    bench('xlarge tree (~5,400 nodes)', () => {
-      getFlattenedTree(xlargeTree);
-    });
-  });
+    describe('xlarge tree (~5,400 nodes)', () => {
+        bench('original (spread)', () => {
+            getFlattenedTreeOriginal(xlargeTree);
+        });
 
-  describe('by tree shape', () => {
-    bench('wide tree (500 roots)', () => {
-      getFlattenedTree(wideTree);
+        bench('optimized (mutation)', () => {
+            getFlattenedTree(xlargeTree);
+        });
     });
 
-    bench('deep tree (100 levels)', () => {
-      getFlattenedTree(deepTree);
+    describe('wide tree (500 roots)', () => {
+        bench('original (spread)', () => {
+            getFlattenedTreeOriginal(wideTree);
+        });
+
+        bench('optimized (mutation)', () => {
+            getFlattenedTree(wideTree);
+        });
     });
-  });
+
+    describe('deep tree (100 levels)', () => {
+        bench('original (spread)', () => {
+            getFlattenedTreeOriginal(deepTree);
+        });
+
+        bench('optimized (mutation)', () => {
+            getFlattenedTree(deepTree);
+        });
+    });
 });
 
 describe('getFlattenedTreePaths', () => {
-  bench('small tree', () => {
-    getFlattenedTreePaths(smallTree);
-  });
+    bench('small tree', () => {
+        getFlattenedTreePaths(smallTree);
+    });
 
-  bench('medium tree', () => {
-    getFlattenedTreePaths(mediumTree);
-  });
+    bench('medium tree', () => {
+        getFlattenedTreePaths(mediumTree);
+    });
 
-  bench('large tree', () => {
-    getFlattenedTreePaths(largeTree);
-  });
+    bench('large tree', () => {
+        getFlattenedTreePaths(largeTree);
+    });
 });
 
 describe('memoization benefit simulation', () => {
-  // Simulate what happens with and without memoization
-  // by calling the function repeatedly with the same input
+    // Simulate what happens with and without memoization
+    // by calling the function repeatedly with the same input
 
-  bench('10 calls without memoization (same tree)', () => {
-    for (let i = 0; i < 10; i++) {
-      getFlattenedTree(mediumTree);
-    }
-  });
+    bench('10 calls without memoization (same tree)', () => {
+        for (let i = 0; i < 10; i++) {
+            getFlattenedTree(mediumTree);
+        }
+    });
 
-  // Simulate memoized behavior - only compute once
-  bench('10 calls with memoization (cached)', () => {
-    const cached = getFlattenedTree(mediumTree);
-    for (let i = 0; i < 10; i++) {
-      const _ = cached; // Just reference the cached value
-    }
-  });
+    // Simulate memoized behavior - only compute once
+    bench('10 calls with memoization (cached)', () => {
+        const cached = getFlattenedTree(mediumTree);
+        for (let i = 0; i < 10; i++) {
+            // noinspection JSUnusedLocalSymbols
+            const _ = cached; // Just reference the cached value
+        }
+    });
 });

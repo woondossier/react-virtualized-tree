@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useMemo, type CSSProperties } from 'react';
+import React, { useRef, useCallback, useMemo } from 'react';
 import {
   AutoSizer,
   List,
@@ -8,16 +8,7 @@ import {
 } from 'react-virtualized';
 
 import TreeState, { State } from './state/TreeState';
-import type { TreeProps, FlattenedNode, NodeAction, RendererProps } from './types';
-
-interface RowRendererParams {
-  node: FlattenedNode;
-  key: string | number;
-  measure: () => void;
-  registerChild?: ((element: Element | null) => void) | undefined;
-  style: CSSProperties;
-  index: number;
-}
+import type { TreeProps, FlattenedNode, RendererProps } from './types';
 
 const Tree: React.FC<TreeProps> = ({
   nodes,
@@ -28,7 +19,6 @@ const Tree: React.FC<TreeProps> = ({
   scrollToIndex,
   scrollToAlignment,
 }) => {
-  // Use useMemo to ensure cache is created once and always available
   const cache = useMemo(
     () =>
       new CellMeasurerCache({
@@ -39,57 +29,27 @@ const Tree: React.FC<TreeProps> = ({
   );
   const listRef = useRef<List | null>(null);
 
-  const getRowCount = useCallback((): number => {
-    return nodes instanceof State ? nodes.flattenedTree.length : (nodes as FlattenedNode[]).length;
-  }, [nodes]);
+  // Use refs for values that change frequently but shouldn't cause re-renders
+  const nodesRef = useRef(nodes);
+  const onChangeRef = useRef(onChange);
+  nodesRef.current = nodes;
+  onChangeRef.current = onChange;
 
-  const getNodeDeepness = useCallback(
-    (node: FlattenedNode, index: number): number => {
-      if (nodes instanceof State) {
-        return TreeState.getNodeDeepness(nodes, index);
-      }
-      return node.deepness;
-    },
-    [nodes]
-  );
+  const rowCount = nodes instanceof State ? nodes.flattenedTree.length : (nodes as FlattenedNode[]).length;
 
-  const getNode = useCallback(
-    (index: number): FlattenedNode => {
-      if (nodes instanceof State) {
-        const node = TreeState.getNodeAt(nodes, index);
-        return { ...node, deepness: getNodeDeepness({} as FlattenedNode, index), parents: [] };
-      }
-      return (nodes as FlattenedNode[])[index];
-    },
-    [nodes, getNodeDeepness]
-  );
-
-  const rowRenderer = useCallback(
-    ({ node, key, measure, registerChild, style, index }: RowRendererParams) => {
-      const NodeComponent = NodeRenderer as React.ComponentType<RendererProps & { ref?: React.Ref<HTMLElement> }>;
-      return (
-        <NodeComponent
-          ref={registerChild as React.Ref<HTMLElement>}
-          key={key}
-          style={{
-            ...style,
-            marginLeft: node.deepness * nodeMarginLeft,
-            userSelect: 'none',
-            cursor: 'pointer',
-          }}
-          node={node}
-          onChange={onChange}
-          measure={measure}
-          index={index}
-        />
-      );
-    },
-    [NodeRenderer, nodeMarginLeft, onChange]
-  );
+  const getNode = useCallback((index: number): FlattenedNode => {
+    const currentNodes = nodesRef.current;
+    if (currentNodes instanceof State) {
+      const node = TreeState.getNodeAt(currentNodes, index);
+      return { ...node, deepness: TreeState.getNodeDeepness(currentNodes, index), parents: [] };
+    }
+    return (currentNodes as FlattenedNode[])[index];
+  }, []);
 
   const measureRowRenderer: ListRowRenderer = useCallback(
     ({ key, index, style, parent }) => {
       const node = getNode(index);
+      const NodeComponent = NodeRenderer as React.ComponentType<RendererProps & { ref?: React.Ref<HTMLElement> }>;
 
       return (
         <CellMeasurer
@@ -99,16 +59,27 @@ const Tree: React.FC<TreeProps> = ({
           rowIndex={index}
           parent={parent}
         >
-          {({ measure, registerChild }) =>
-            rowRenderer({ measure, registerChild, index, node, key, style })
-          }
+          {({ measure, registerChild }) => (
+            <NodeComponent
+              ref={registerChild as React.Ref<HTMLElement>}
+              key={key}
+              style={{
+                ...style,
+                marginLeft: node.deepness * nodeMarginLeft,
+                userSelect: 'none',
+                cursor: 'pointer',
+              }}
+              node={node}
+              onChange={onChangeRef.current}
+              measure={measure}
+              index={index}
+            />
+          )}
         </CellMeasurer>
       );
     },
-    [getNode, rowRenderer]
+    [cache, getNode, NodeRenderer, nodeMarginLeft]
   );
-
-  const rowCount = useMemo(() => getRowCount(), [getRowCount]);
 
   return (
     <AutoSizer disableWidth={Boolean(width)}>

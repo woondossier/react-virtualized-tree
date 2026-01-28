@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { submitEvent } from '../eventWrappers';
 import { getNodeRenderOptions, updateNode } from '../selectors/nodes';
-import type { ExpandableRendererProps, ExpandableIconsClassNameMap } from '../types';
+import type { ExpandableRendererProps } from '../types';
 
 const Expandable = memo(
   forwardRef<HTMLSpanElement, ExpandableRendererProps>(

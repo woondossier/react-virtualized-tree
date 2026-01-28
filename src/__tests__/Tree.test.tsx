@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Tree from '../Tree';
-import TreeState, { State } from '../state/TreeState';
-import type { RendererProps, Node, FlattenedNode, NodeAction } from '../types';
+import TreeState from '../state/TreeState';
+import type { RendererProps, Node, FlattenedNode } from '../types';
 
 const sampleNodes: Node[] = [
   {

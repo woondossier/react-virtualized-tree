@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { submitEvent } from '../eventWrappers';
 import { getNodeRenderOptions, updateNode } from '../selectors/nodes';
-import type { FavoriteRendererProps, FavoriteIconsClassNameMap } from '../types';
+import type { FavoriteRendererProps } from '../types';
 
 const Favorite = memo(
   forwardRef<HTMLSpanElement, FavoriteRendererProps>(

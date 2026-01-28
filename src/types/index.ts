@@ -127,6 +127,7 @@ export interface TreeContainerProps {
   width?: number;
   scrollToId?: NodeId;
   scrollToAlignment?: string;
+  onScrollComplete?: () => void;
 }
 
 // ============================================================================

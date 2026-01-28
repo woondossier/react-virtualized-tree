@@ -1,11 +1,11 @@
-import React, { useContext, type ComponentType } from 'react';
+import React, { useCallback, useContext, useRef, type ComponentType } from 'react';
 
 import Tree from './Tree';
 import TreeStateModifiers from './state/TreeStateModifiers';
 import { UPDATE_TYPE } from './constants';
 import { TreeContext } from './context/TreeContext';
 import { State } from './state/TreeState';
-import type { NodeAction, RendererProps, Node } from './types';
+import type { NodeAction, RendererProps } from './types';
 
 interface UnstableFastTreeProps {
   nodes: State;
@@ -27,16 +27,22 @@ const UnstableFastTree: React.FC<UnstableFastTreeProps> = ({
   const contextNodes = unfilteredNodes as unknown as State | null;
   const nodes: State = contextNodes ?? propNodes;
 
-  const handleChange = ({ node, type, index }: NodeAction) => {
+  // Use refs to avoid recreating handleChange when nodes/onChange change
+  const nodesRef = useRef(nodes);
+  const onChangeRef = useRef(onChange);
+  nodesRef.current = nodes;
+  onChangeRef.current = onChange;
+
+  const handleChange = useCallback(({ node, type, index }: NodeAction) => {
     let nextTreeState: State;
     if (type === UPDATE_TYPE.UPDATE) {
-      nextTreeState = TreeStateModifiers.editNodeAt(nodes, index!, node);
+      nextTreeState = TreeStateModifiers.editNodeAt(nodesRef.current, index!, node);
     } else {
-      nextTreeState = TreeStateModifiers.deleteNodeAt(nodes, index!);
+      nextTreeState = TreeStateModifiers.deleteNodeAt(nodesRef.current, index!);
     }
 
-    onChange?.(nextTreeState);
-  };
+    onChangeRef.current?.(nextTreeState);
+  }, []);
 
   return (
     <Tree
