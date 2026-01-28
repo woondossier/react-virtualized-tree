@@ -1,60 +1,213 @@
-# react-virtualized-tree
+# @innobrix/react-virtualized-tree
 
-[![Travis][build-badge]][build]
-[![npm package][npm-badge]][npm]
-[![Coveralls][coveralls-badge]][coveralls]
-[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/react-virtualized-tree/Lobby)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-
-[build-badge]: https://img.shields.io/travis/diogofcunha/react-virtualized-tree/master.png?style=flat-square
-[build]: https://travis-ci.org/diogofcunha/react-virtualized-tree
-[npm-badge]: https://img.shields.io/npm/v/react-virtualized-tree.png?style=flat-square
-[npm]: https://www.npmjs.com/package/react-virtualized-tree
-[coveralls-badge]: https://img.shields.io/coveralls/diogofcunha/react-virtualized-tree/master.png?style=flat-square
-[coveralls]: https://coveralls.io/github/diogofcunha/react-virtualized-tree
+A performant tree view React component built on top of [react-virtualized](https://bvaughn.github.io/react-virtualized/#/components/List).
 
 <div align="center" style="margin-bottom: 30px;">
 <img src="https://user-images.githubusercontent.com/1521183/37708046-14cf3fb4-2cfd-11e8-9fad-8c0d557397cd.gif" width="650"/>
 </div>
 
-## Introduction
+## Features
 
-**react-virtualized-tree** is a tree view react library built on top of [react-virtualized](https://bvaughn.github.io/react-virtualized/#/components/List)
-
-Its main goal is to display tree like data in a beautiful and fast way. Being a reactive library it uses children functions to achieve maximum extensibility. The core idea behind it is that anyone using it is enable to create a tree as they intent just by rendering their own components or components exported by the tree.
-
-Demo and docs can be found [in here](https://diogofcunha.github.io/react-virtualized-tree/#/examples/basic-tree).
+- TypeScript support with full type definitions
+- Virtualized rendering for large trees
+- Customizable node renderers (Expandable, Deletable, Favorite)
+- Built-in filtering with group support
+- Tree state management utilities
+- React 18 and 19 compatible
 
 ## Installation
 
-You can install via npm or yarn.
-`npm i react-virtualized-tree --save`
+```bash
+npm install @innobrix/react-virtualized-tree
+```
 
 or
 
-`yarn add react-virtualized-tree`
-
-To get the basic styles for free you need to import react-virtualized styles only once.
-
-```
-import 'react-virtualized/styles.css'
-import 'react-virtualized-tree/lib/main.css'
+```bash
+yarn add @innobrix/react-virtualized-tree
 ```
 
-If you want to use the icons in the default renderers do the same for material icons.
+### Peer Dependencies
 
-`import 'material-icons/css/material-icons.css'`
+This library requires the following peer dependencies:
+
+```bash
+npm install react react-dom react-virtualized
+```
+
+### Styles
+
+Import the required styles:
+
+```javascript
+import 'react-virtualized/styles.css';
+```
+
+For the default icon renderers, also import Material Icons:
+
+```javascript
+import 'material-icons/css/material-icons.css';
+```
 
 ## Usage
 
-To use the standalone tree
+### Basic Tree
 
-`import Tree from 'react-virtualized-tree'`
+```tsx
+import { Tree, TreeState, TreeStateModifiers } from '@innobrix/react-virtualized-tree';
+import type { Node, RendererProps } from '@innobrix/react-virtualized-tree';
 
-To use the FilteringContainer
+const nodes: Node[] = [
+  {
+    id: 1,
+    name: 'Parent',
+    state: { expanded: true },
+    children: [
+      { id: 2, name: 'Child 1' },
+      { id: 3, name: 'Child 2' },
+    ],
+  },
+];
 
-`import { FilteringContainer } from 'react-virtualized-tree'`
+function MyTree() {
+  const [treeNodes, setTreeNodes] = useState(nodes);
 
-## Dependencies
+  return (
+    <Tree nodes={treeNodes} onChange={setTreeNodes}>
+      {({ node, ...rest }: RendererProps) => (
+        <div>{node.name}</div>
+      )}
+    </Tree>
+  );
+}
+```
 
-Most react-virtualized-tree Dependencies are managed internally, the only required peerDependencies are **react**, **react-dom** and **react-virtualized**.
+### With Filtering
+
+```tsx
+import { Tree, FilteringContainer } from '@innobrix/react-virtualized-tree';
+
+function FilterableTree() {
+  const [nodes, setNodes] = useState(initialNodes);
+
+  return (
+    <FilteringContainer nodes={nodes}>
+      {({ nodes: filteredNodes }) => (
+        <Tree nodes={filteredNodes} onChange={setNodes}>
+          {({ node }) => <div>{node.name}</div>}
+        </Tree>
+      )}
+    </FilteringContainer>
+  );
+}
+```
+
+### Built-in Renderers
+
+The library provides several built-in renderers:
+
+```tsx
+import { renderers } from '@innobrix/react-virtualized-tree';
+
+const { Expandable, Deletable, Favorite } = renderers;
+```
+
+## API
+
+### Exports
+
+```typescript
+import {
+  Tree,                  // Main tree component
+  FilteringContainer,    // Container for filtering functionality
+  TreeState,             // Tree state management
+  TreeStateModifiers,    // State modification utilities
+  selectors,             // Node selection utilities
+  renderers,             // Built-in renderers (Expandable, Deletable, Favorite)
+  constants,             // Constants (UPDATE_TYPE, etc.)
+  debounce,              // Debounce utility
+} from '@innobrix/react-virtualized-tree';
+```
+
+### Types
+
+```typescript
+import type {
+  Node,
+  NodeId,
+  NodeState,
+  FlattenedNode,
+  NodeAction,
+  RendererProps,
+  TreeProps,
+  TreeContainerProps,
+  FilteringContainerProps,
+  Extensions,
+  UpdateType,
+} from '@innobrix/react-virtualized-tree';
+```
+
+### Tree Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `nodes` | `Node[]` | Array of tree nodes |
+| `onChange` | `(nodes: Node[]) => void` | Callback when nodes change |
+| `children` | `ComponentType<RendererProps>` | Node renderer component |
+| `nodeMarginLeft` | `number` | Left margin for nested nodes (default: 25) |
+| `width` | `number` | Tree width |
+| `scrollToId` | `NodeId` | ID of node to scroll to |
+| `scrollToAlignment` | `string` | Scroll alignment |
+| `onScrollComplete` | `() => void` | Callback when scroll completes |
+| `extensions` | `Extensions` | Custom update type handlers |
+
+### Node Structure
+
+```typescript
+interface Node {
+  id: NodeId;           // Unique identifier (number or string)
+  name: string;         // Display name
+  state?: NodeState;    // Node state (expanded, deletable, favorite, etc.)
+  children?: Node[];    // Child nodes
+}
+
+interface NodeState {
+  expanded?: boolean;
+  deletable?: boolean;
+  favorite?: boolean;
+  [key: string]: unknown;  // Custom state properties
+}
+```
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Type check
+npm run typecheck
+
+# Build
+npm run build
+
+# Lint
+npm run lint
+```
+
+## License
+
+MIT
+
+## Credits
+
+Originally forked from [diogofcunha/react-virtualized-tree](https://github.com/diogofcunha/react-virtualized-tree).
