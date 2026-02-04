@@ -2,6 +2,7 @@ import React from 'react';
 
 import Basic from './Basic';
 import ChangeRenderers from './ChangeRenderers';
+import E2ETestPage from './E2ETestPage';
 import Extensions from './Extensions';
 import Filterable from './Filterable';
 import KeyboardNavigation from './KeyboardNavigation';
@@ -21,6 +22,16 @@ export interface RouteEntry {
 }
 
 const routes: { [key: string]: RouteEntry } = {
+  'e2e-test': {
+    name: 'E2E Test Page',
+    fileName: 'E2ETestPage',
+    description: (
+      <div>
+        <p>A dedicated page for E2E testing. Used by Playwright tests.</p>
+      </div>
+    ),
+    component: E2ETestPage,
+  },
   'basic-tree': {
     name: 'Basic Tree',
     fileName: 'Basic/index',

@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import React from 'react';
+import React, { useImperativeHandle } from 'react';
 import { vi } from 'vitest';
 
 // Mock CellMeasurerCache class - must be a proper class for `new` to work
@@ -15,18 +15,24 @@ class MockCellMeasurerCache {
 
 // Mock List component with forwardRef to avoid ref warnings
 const MockList = React.forwardRef<
-  HTMLDivElement,
+  { forceUpdateGrid: () => void },
   {
     rowRenderer: (params: { index: number; key: number; style: object }) => React.ReactNode;
     rowCount: number;
   }
->(({ rowRenderer, rowCount }, ref) => (
-  <div data-testid="virtualized-list" ref={ref}>
-    {Array.from({ length: Math.min(rowCount, 10) }, (_, index) =>
-      rowRenderer({ index, key: index, style: {} })
-    )}
-  </div>
-));
+>(({ rowRenderer, rowCount }, ref) => {
+  useImperativeHandle(ref, () => ({
+    forceUpdateGrid: vi.fn(),
+  }));
+
+  return (
+    <div data-testid="virtualized-list">
+      {Array.from({ length: Math.min(rowCount, 10) }, (_, index) =>
+        rowRenderer({ index, key: index, style: {} })
+      )}
+    </div>
+  );
+});
 MockList.displayName = 'MockList';
 
 // Mock react-virtualized components for testing
