@@ -2,8 +2,8 @@
 
 A performant tree view React component built on top of [react-virtualized](https://bvaughn.github.io/react-virtualized/#/components/List).
 
-<div align="center" style="margin-bottom: 30px;">
-<img src="https://user-images.githubusercontent.com/1521183/37708046-14cf3fb4-2cfd-11e8-9fad-8c0d557397cd.gif" width="650"/>
+<div style="display: flex; align-items: center; margin-bottom: 30px;">
+<img alt="image" src="https://user-images.githubusercontent.com/1521183/37708046-14cf3fb4-2cfd-11e8-9fad-8c0d557397cd.gif" width="650"/>
 </div>
 
 ## Features
@@ -178,6 +178,43 @@ interface NodeState {
   [key: string]: unknown;  // Custom state properties
 }
 ```
+
+## Performance
+
+For optimal performance, **memoize your node tree** before passing it to the `Tree` component. This prevents unnecessary re-renders and tree flattening calculations.
+
+### With Redux (recommended)
+
+```typescript
+import { createSelector } from '@reduxjs/toolkit';
+
+const selectRawNodes = (state: RootState) => state.tree.nodes;
+
+// Memoized selector - tree only recalculates when nodes actually change
+export const selectNodes = createSelector(
+  [selectRawNodes],
+  (nodes) => nodes
+);
+```
+
+### With React
+
+```tsx
+import { useMemo } from 'react';
+
+function MyTree({ data }) {
+  // Memoize the nodes array
+  const nodes = useMemo(() => transformToNodes(data), [data]);
+
+  return (
+    <Tree nodes={nodes} onChange={setNodes}>
+      {({ node }) => <div>{node.name}</div>}
+    </Tree>
+  );
+}
+```
+
+Without memoization, the tree will re-flatten on every parent render, which can be expensive for large trees.
 
 ## Development
 

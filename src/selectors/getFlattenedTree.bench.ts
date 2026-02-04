@@ -101,22 +101,3 @@ describe('getFlattenedTreePaths', () => {
     });
 });
 
-describe('memoization benefit simulation', () => {
-    // Simulate what happens with and without memoization
-    // by calling the function repeatedly with the same input
-
-    bench('10 calls without memoization (same tree)', () => {
-        for (let i = 0; i < 10; i++) {
-            getFlattenedTree(mediumTree);
-        }
-    });
-
-    // Simulate memoized behavior - only compute once
-    bench('10 calls with memoization (cached)', () => {
-        const cached = getFlattenedTree(mediumTree);
-        for (let i = 0; i < 10; i++) {
-            // noinspection JSUnusedLocalSymbols
-            const _ = cached; // Just reference the cached value
-        }
-    });
-});
