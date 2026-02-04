@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useMemo } from 'react';
+import React, { useRef, useCallback, useMemo, useEffect } from 'react';
 import {
   AutoSizer,
   List,
@@ -36,6 +36,13 @@ const Tree: React.FC<TreeProps> = ({
   onChangeRef.current = onChange;
 
   const rowCount = nodes instanceof State ? nodes.flattenedTree.length : (nodes as FlattenedNode[]).length;
+
+  // Force react-virtualized to re-render when nodes change
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.forceUpdateGrid();
+    }
+  }, [nodes]);
 
   const getNode = useCallback((index: number): FlattenedNode => {
     const currentNodes = nodesRef.current;
